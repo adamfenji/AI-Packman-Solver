@@ -2,6 +2,8 @@
 
 This repository documents my work from **CS4811: Artificial Intelligence**, a core upper-level computer science course I completed at **Michigan Technological University**. The class adapted materials and project infrastructure from UC Berkeley’s **CS188: Artificial Intelligence**. The course introduces foundational concepts in artificial intelligence, including state-space search, adversarial reasoning, constraint satisfaction, logical inference, probabilistic reasoning, and machine learning. The class is hands-on and project-heavy, with each project focusing on a major subarea of AI using the Pac-Man autograder environment.
 
+![Pac-Man Search Demo](https://media.giphy.com/media/your-gif-url.gif)
+
 ## 📂 AI Topics & Techniques Implemented
 
 | # | Topic                        | Description |
