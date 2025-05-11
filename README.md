@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="pacman-gif.gif" alt="Pac-Man Search Demo" />
+  <img src="pacman-gif.gif" alt="Pac-Man Search Demo" width="400" />
 </p>
 
 ## 📘 Project Overview
