@@ -4,6 +4,10 @@ This repository documents my work from **CS4811: Artificial Intelligence**, a co
 
 ![pacman gif](pacman-gif.gif)
 
+<p align="center">
+  <img src="pacman-gif.gif" alt="Pac-Man Search Demo" />
+</p>
+
 ## 📂 AI Topics & Techniques Implemented
 
 | # | Topic                        | Description |
