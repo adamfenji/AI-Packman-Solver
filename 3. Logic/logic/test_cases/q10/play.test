@@ -1,0 +1,5 @@
+class: "EvalTest"
+
+test: "cluedo_game.play_cluedo(False)"
+success: "Your model makes a correct deduction!"
+failure: "Your model makes an incorrect deduction!"

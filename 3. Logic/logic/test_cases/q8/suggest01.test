@@ -1,0 +1,6 @@
+class: "CNFTest"
+
+test: "cluedo.suggest('sc', 'sc', 'ro', 'lo', 'mu', 'sc')"
+description: "Ms. Scarlet (player) suggests 'Ms. Scarlet with the Rope in the Lounge'. Col. Mustard refutes with Ms. Scarlet card. One new fact, musc (22) is produced."
+literals: "[22]"
+clauses: "1"

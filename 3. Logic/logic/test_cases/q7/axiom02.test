@@ -1,0 +1,8 @@
+class: "CNFTest"
+
+description: "If a card is in one place, it can not be in another place"
+test: "cluedo.axiom_card_unique()"
+minsize: "2"
+minsize_msg: "Each card can not simultaneously be in two different hands (players of case file)"
+maxsize: "2"
+maxsize_msg: "Each card can not simultaneously be in two different hands (players of case file)"

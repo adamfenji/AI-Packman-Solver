@@ -1,0 +1,9 @@
+class: "CNFTest"
+
+description: "If a card from one category is in the case file, then another card of the same category can not be in the case file"
+test: "cluedo.axiom_casefile_unique()"
+literals: "[127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147]"
+minsize: "2"
+minsize_msg: "no two cards of each group can be in the case file simultaneously"
+maxsize: "2"
+maxsize_msg: "no two cards of each group can be in the case file simultaneously"

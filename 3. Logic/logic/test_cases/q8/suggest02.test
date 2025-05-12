@@ -1,0 +1,6 @@
+class: "CNFTest"
+
+test: "cluedo.suggest('mu', 'pe', 'pi', 'di', 'pe', None)"
+description: "Col. Mustard (non-player) suggests 'Mrs. Peacock with the Lead Pipe in the Dining Room'. Mrs. White can not refute this. Mr. Green can not refute this. Mrs. Peacock refutes (but the card is hidden). Six new facts, and one new 'at least clause' are produced."
+literals: "[47, 53, 57, 68, 74, 78, 89, 95, 99]"
+clauses: "7"

@@ -1,0 +1,7 @@
+class: "CNFTest"
+
+description: "The salt has been eaten"
+test: "liars.rule_salt()"
+literals: "[4, 5, 6]"
+minsize: "2"
+minsize_msg: "no clauses should state facts, i.e., all clauses should have at least two statements"

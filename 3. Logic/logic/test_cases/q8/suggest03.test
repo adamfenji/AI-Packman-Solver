@@ -1,0 +1,14 @@
+class: "EvalTest"
+success: "Suggest only produces facts, and the facts detail non-refuter and refuter information"
+failure: "Suggest should only produce facts, and the facts should detail non-refuter and refuter information"
+
+# A python expression to be evaluated.  This expression must return the
+# same result for the student and instructor's code.
+test: "all([len(clause)==1 for clause in cluedo.suggest('pl', 'pe', 'pi', 'ba', None, None)]) and set([item for sublist in cluedo.suggest('pl', 'pe', 'pi', 'ba', None, None) for item in sublist])==set([5, 11, 17, 26, 32, 38, 47, 53, 59, 68, 74, 80, 89, 95, 101])"
+
+class: "CNFTest"
+
+test: "cluedo.suggest('pl', 'pe', 'pi', 'ba', None, None)"
+description: "Prof. Plum (non-player) suggests 'Mrs. Peacock with the Lead Pipe in the Ballroom'. No one can refute. Fifteen new facts are produced."
+literals: "[5, 11, 17, 26, 32, 38, 47, 53, 59, 68, 74, 80, 89, 95, 101]"
+clauses: "15"

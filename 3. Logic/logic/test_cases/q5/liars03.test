@@ -1,0 +1,7 @@
+class: "CNFTest"
+
+description: "CHESHIRE CAT's statement"
+test: "liars.rule_cheshire()"
+literals: "[3, 6]"
+minsize: "2"
+minsize_msg: "no clauses should state facts, i.e., all clauses should have at least two statements"

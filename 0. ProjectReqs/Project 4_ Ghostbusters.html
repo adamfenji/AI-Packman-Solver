@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Project 4: Ghostbusters</title>
+    
+    <link rel="stylesheet" href="./Project 4_ Ghostbusters_files/main.css">
+    <link rel="stylesheet" href="./Project 4_ Ghostbusters_files/code_block.css">
+    <link rel="stylesheet" href="./Project 4_ Ghostbusters_files/github_v2.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="./Project 4_ Ghostbusters_files/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css">-->
+    <link rel="stylesheet" href="./Project 4_ Ghostbusters_files/bootstrap.toc.css">
+
+    <!--<script src="assets/js/jquery.min.js"></script>-->
+    <script src="./Project 4_ Ghostbusters_files/jquery-3.5.1.slim.min.js.download" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="./Project 4_ Ghostbusters_files/bootstrap.bundle.min.js.download" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>-->
+    <script src="./Project 4_ Ghostbusters_files/bootstrap.toc.js.download"></script>
+    <!--<script src="/assets/js/clipboard.min.js"></script>
+    <script src="/assets/js/codeselect.js"></script>-->
+    
+  </head>
+  <body data-spy="scroll" data-target="#toc">
+  <div class="container">
+    <div class="row">
+      <!-- sidebar, which will move to the top on a small screen -->
+      <div class="col-sm-3">
+        <nav id="toc" data-toggle="toc" class="sticky-top" style="top: 40px"><ul class="nav navbar-nav"><li><a class="nav-link" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html#introduction">Introduction</a></li><li><a class="nav-link" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html#ghostbusters">Ghostbusters</a></li><li><a class="nav-link" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html#q0-0-points-discretedistribution-class">Q0: (0 points) DiscreteDistribution Class</a></li><li><a class="nav-link" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html#q1-3-pts-observation-probability">Q1: (3 pts) Observation Probability</a></li><li><a class="nav-link" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html#q2-6-pts-exact-inference-observation">Q2: (6 pts) Exact Inference Observation</a></li><li><a class="nav-link" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html#q3-6-pts-exact-inference-with-time-elapse">Q3: (6 pts) Exact Inference with Time Elapse</a></li><li><a class="nav-link" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html#q4-3-pts-exact-inference-full-test">Q4: (3 pts) Exact Inference Full Test</a></li><li><a class="nav-link" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html#q5-2-pts-approximate-inference-initialization-and-beliefs">Q5: (2 pts) Approximate Inference Initialization and Beliefs</a></li><li><a class="nav-link" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html#q6-5-pts-approximate-inference-observation">Q6: (5 pts) Approximate Inference Observation</a></li><li><a class="nav-link" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html#q7-5-pts-approximate-inference-with-time-elapse">Q7: (5 pts) Approximate Inference with Time Elapse</a></li><li><a class="nav-link" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/project4.html#submission">Submission</a></li></ul></nav>
+      </div>
+      <!-- main content area -->
+	  <div class="col-sm-9">  
+    	<h1 class="project_title">Project 4 - Ghostbusters</h1>
+
+<center> Version 1.007. Last Updated: 10/27/2021.  </center>
+
+<!--<center> <b>Due: 11/5/21, Fri. at 11:59pm </b></center>-->
+
+<center><img src="./Project 4_ Ghostbusters_files/busters.png" width="400px"></center>
+<p></p>
+<center>I can hear you, ghost.<br> Running won't save you from my<br> Inference function!</center>
+<p></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Pacman spends his life running from ghosts, but things were not always so. Legend has it that many years ago, Pacman’s great grandfather Grandpac learned to hunt ghosts for sport. However, he was blinded by his power and could only track ghosts by their banging and clanging.</p>
+
+<p>In this project, you will design Pacman agents that use sensors to locate and eat invisible ghosts. You’ll advance from locating single, stationary ghosts to hunting packs of multiple moving ghosts with ruthless efficiency.</p>
+
+<p>The code for this project contains the following files, available as a zip archive:<code class="bh">tracking.zip</code>.</p>
+
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <td><strong>Files you’ll edit</strong></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><code class="bh">bustersAgents.py</code></td>
+      <td>Agents for playing the Ghostbusters variant of Pacman.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">inference.py</code></td>
+      <td>Code for tracking ghosts over time using their sounds.</td>
+    </tr>
+    <tr>
+      <td><strong>Files you might want to look at</strong></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><code class="bh">busters.py</code></td>
+      <td>The main entry to Ghostbusters (replacing Pacman.py)</td>
+    </tr>
+    <tr>
+      <td><code class="bh">distanceCalculator.py</code></td>
+      <td>Computes maze distances</td>
+    </tr>
+    <tr>
+      <td><strong>Files you can ignore:</strong></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><code class="bh">autograder.py</code><br><code class="bh">grading.py</code><br><code class="bh">projectParams.py</code><br><code class="bh">trackingTestClasses.py</code><br><code class="bh">submission_autograder.py</code><br><code class="bh">test_cases/</code><br><code class="bh">testClasses.py</code><br><code class="bh">testParser.py</code></td>
+      <td>Files related to autograder infrastructure for Project 4: test and solution files, test classes, parse autograder test and solution files, etc.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">graphicsDisplay.py</code><br><code class="bh">graphicsUtils.py</code><br><code class="bh">textDisplay.py</code></td>
+      <td>Graphics for Pacman, Support for Pacman graphics, ASCII graphics for Pacman</td>
+    </tr>
+    <tr>
+      <td><code class="bh">ghostAgents.py</code><br><code class="bh">bustersGhostAgents.py</code></td>
+      <td>Agents to control ghosts</td>
+    </tr>
+    <tr>
+      <td><code class="bh">keyboardAgents.py</code></td>
+      <td>Keyboard interfaces to control Pacman</td>
+    </tr>
+    <tr>
+      <td><code class="bh">layout.py</code><br><code class="bh">layouts/</code></td>
+      <td>Code for reading layout files and storing their contents</td>
+    </tr>
+    <tr>
+      <td><code class="bh">game.py</code></td>
+      <td>Inner workings and helper classes for Pacman</td>
+    </tr>
+    <tr>
+      <td><code class="bh">util.py</code></td>
+      <td>Utility functions</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br></p>
+
+<p><strong>Files to Edit:</strong> You will fill in portions of <code class="bh">bustersAgents.py</code> and <code class="bh">inference.py</code> during the assignment. You should submit these files with your code and comments. Please <em>do not</em> change the other files in this distribution or submit any of the original files other than these files.</p>
+
+<p><strong>Evaluation:</strong>  Your code will be autograded for technical correctness. Please <em>do not</em> change the names of any provided functions or classes within the code, or you will wreak havoc on the autograder. However, the correctness of your implementation – not the autograder’s judgements – will be the final judge of your score. If necessary, I will review and grade assignments individually to ensure that you receive due credit for your work.</p>
+
+<p><strong>Academic Dishonesty:</strong>  I will be checking your code against other submissions in the class for logical redundancy. <strong>If you copy someone else’s code and submit it with minor changes, I will know.</strong>  The code to detect this is extremely hard to fool, so please don’t try.  I trust you all to submit your own work only; <em>please</em> don’t let me down.  If you do copy someone else’s code, I will pursue the strongest consequences available to me – see the syllabus.</p>
+
+<p><strong>Getting Help:</strong>  You are not alone! If you find yourself stuck on something, contact Dr. Brown for help. Office hours, and the discussion forum are there for your support; please use them. If you can’t make my office hours, let me know and I will schedule more. These projects should be rewarding and instructional, not frustrating and demoralizing.</p>
+
+<p><strong>Discussion:</strong>  Please post to the discussion post about general questions, for all the class to see (and help in answering).  Specific or detailed questions about your solution, can be posted privately to the instructional staff.</p>
+
+<h2 id="ghostbusters">Ghostbusters</h2>
+
+<p>In this version of Ghostbusters, the goal is to hunt down scared but invisible ghosts. Pacman, ever resourceful, is equipped with sonar (ears) that provides noisy readings of the Manhattan distance to each ghost. The game ends when Pacman has eaten all the ghosts. To start, try playing a game yourself using the keyboard.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python busters.py</code></pre></figure>
+
+<p>The blocks of color indicate where the each ghost could possibly be, given the noisy distance readings provided to Pacman. The noisy distances at the bottom of the display are always non-negative, and always within 7 of the true distance. The probability of a distance reading decreases exponentially with its difference from the true distance.</p>
+
+<p>Your primary task in this project is to implement inference to track the ghosts. For the keyboard based game above, a crude form of inference was implemented for you by default: all squares in which a ghost could possibly be are shaded by the color of the ghost. Naturally, we want a better estimate of the ghost’s position. Fortunately, Bayes’ Nets provide us with powerful tools for making the most of the information we have. Throughout the rest of this project, you will implement algorithms for performing both exact and approximate inference using Bayes’ Nets. The lab is challenging, so we do encourage you to start early and seek help when necessary.</p>
+
+<p>While watching and debugging your code with the autograder, it will be helpful to have some understanding of what the autograder is doing. There are 2 types of tests in this project, as differentiated by their <code class="bh">*.test</code> files found in the subdirectories of the <code class="bh">test_cases</code> folder. For tests of class <code class="rh">DoubleInferenceAgentTest</code>, your will see visualizations of the inference distributions generated by your code, but all Pacman actions will be preselected according to the actions of the staff implementation. This is necessary in order to allow comparison of your distributions with the staff’s distributions. The second type of test is <code class="rh">GameScoreTest</code>, in which your <code class="rh">BustersAgent</code> will actually select actions for Pacman and you will watch your Pacman play and win games.</p>
+
+<p>As you implement and debug your code, you may find it useful to run a single test at a time. In order to do this you will need to use the <code class="ph">-t</code> flag with the autograder. For example if you only want to run the first test of question 1, use:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-t</span> test_cases/q1/1-ObsProb</code></pre></figure>
+
+<p>In general, all test cases can be found inside <code class="bh">test_cases/q*.</code></p>
+
+<p>For this project, it is possible sometimes for the autograder to time out if running the tests with graphics. To accurately determine whether or not your code is efficient enough, you should run the tests with the <code class="ph">--no-graphics</code> flag. If the autograder passes with this flag, then you will receive full points, even if the autograder times out with graphics.</p>
+
+<hr>
+
+<h2 id="q0-0-points-discretedistribution-class">Q0: (0 points) DiscreteDistribution Class</h2>
+
+<p>Throughout this project, we will be using the <code class="rh">DiscreteDistribution</code> class defined in <code class="bh">inference.py</code> to model belief distributions and weight distributions. This class is an extension of the built-in Python dictionary class, where the keys are the different discrete elements of our distribution, and the corresponding values are proportional to the belief or weight that the distribution assigns that element. This question asks you to fill in the missing parts of this class, which will be crucial for later questions (even though this question itself is worth no points).</p>
+
+<p>First, fill in the <code class="rh">normalize</code> method, which normalizes the values in the distribution to sum to one, but keeps the proportions of the values the same. Use the <code class="rh">total</code> method to find the sum of the values in the distribution. For an empty distribution or a distribution where all of the values are zero, do nothing. Note that <u>this method modifies the distribution directly</u>, rather than returning a new distribution.</p>
+
+<p>Second, fill in the <code class="rh">sample</code> method, which draws a sample from the distribution, where the probability that a key is sampled is proportional to its corresponding value. Assume that the distribution is not empty, and not all of the values are zero. Note that the distribution does not necessarily have to be normalized prior to calling this method. You may find Python’s built-in <code class="rh">random.random()</code> function useful for this question.</p>
+
+<p>There are no autograder tests for this question, but the correctness of your implementation can be easily checked. We have provided <a href="https://docs.python.org/3/library/doctest.html">Python doctests</a> as a starting point, and you can feel free to add more and implement other tests of your own. You can run the doctests using:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python <span class="nt">-m</span> doctest <span class="nt">-v</span> inference.py</code></pre></figure>
+
+<p>Note that, depending on the implementation details of the <code class="rh">sample</code> method, some correct implementations may not pass the doctests that are provided. To thoroughly check the correctness of your <code class="rh">sample</code> method, you should instead draw many samples and see if the frequency of each key converges to be proportional of its corresponding value.</p>
+
+<hr>
+
+<h2 id="q1-3-pts-observation-probability">Q1: (3 pts) Observation Probability</h2>
+
+<p>In this question, you will implement the <code class="rh">getObservationProb</code> method in the <code class="rh">InferenceModule</code> base class in <code class="bh">inference.py</code>. This method takes in an observation (which is a noisy reading of the distance to the ghost), Pacman’s position, the ghost’s position, and the position of the ghost’s jail, and returns the probability of the noisy distance reading given Pacman’s position and the ghost’s position. In other words, we want to return <code class="rh">P(noisyDistance | pacmanPosition, ghostPosition)</code>.</p>
+
+<p>The distance sensor has a probability distribution over distance readings given the true distance from Pacman to the ghost. This distribution is modeled by the function <code class="rh">busters.getObservationProbability(noisyDistance, trueDistance)</code>, which returns <code class="rh">P(noisyDistance | trueDistance)</code> and is provided for you. You should use this function to help you solve the problem, and use the provided <code class="rh">manhattanDistance</code> function to find the distance between Pacman’s location and the ghost’s location.</p>
+
+<p>However, there is the special case of jail that we have to handle as well. Specifically, when we capture a ghost and send it to the jail location, our distance sensor deterministically returns <code class="rh">None</code>, and nothing else. So, if the ghost’s position is the jail position, then the observation is <code class="rh">None</code> with probability 1, and everything else with probability 0. Conversely, if the distance reading is not <code class="rh">None</code>, then the ghost is in jail with probability 0. If the distance reading is <code class="rh">None</code> then the ghost is in jail with probability 1. Make sure you handle this special case in your implementation.</p>
+
+<p>To test your code and run the autograder for this question:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q1</code></pre></figure>
+
+<p>As a general note, it is possible for some of the autograder tests to take a long time to run for this project, and you will have to exercise patience. As long as the autograder doesn’t time out, you should be fine (provided that you actually pass the tests).</p>
+
+<hr>
+
+<h2 id="q2-6-pts-exact-inference-observation">Q2: (6 pts) Exact Inference Observation</h2>
+
+<p>In this question, you will implement the <code class="rh">observeUpdate</code> method in <code class="rh">ExactInference</code> class of <code class="bh">inference.py</code> to correctly update the agent’s belief distribution over ghost positions given an observation from Pacman’s sensors. You are implementing the online belief update for observing new evidence. The <code class="rh">observeUpdate</code> method should, for this problem, update the belief at every position on the map after receiving a sensor reading. You should iterate your updates over the variable <code class="rh">self.allPositions</code> which includes all legal positions plus the special jail position. Beliefs represent the probability that the ghost is at a particular location, and are stored as a <code class="rh">DiscreteDistribution</code> object in a field called <code class="rh">self.beliefs</code>, which you should update.</p>
+
+<p><strong>Before typing any code</strong>, write down the equation of the inference problem you are trying to solve. You should use the function <code class="rh">self.getObservationProb</code> that you wrote in the last question, which returns the probability of an observation given Pacman’s position, a potential ghost position, and the jail position. You can obtain Pacman’s position using <code class="rh">gameState.getPacmanPosition()</code>, and the jail position using <code class="rh">self.getJailPosition()</code>.</p>
+
+<p>In the Pacman display, high posterior beliefs are represented by bright colors, while low beliefs are represented by dim colors. You should start with a large cloud of belief that shrinks over time as more evidence accumulates. As you watch the test cases, be sure that you understand how the squares converge to their final coloring.</p>
+
+<p><em>Note:</em> your busters agents have a separate inference module for each ghost they are tracking. That’s why if you print an observation inside the <code class="rh">observeUpdate</code> function, you’ll only see a single number even though there may be multiple ghosts on the board.</p>
+
+<p>To run the autograder for this question and visualize the output:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q2</code></pre></figure>
+
+<p>If you want to run this test (or any of the other tests) without graphics you can add the following flag:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q2 <span class="nt">--no-graphics</span></code></pre></figure>
+
+<p><strong>IMPORTANT</strong> In general, it is possible sometimes for the autograder to time out if running the tests with graphics. To accurately determine whether or not your code is efficient enough, you should run the tests with the <code class="ph">--no-graphics</code> flag. If the autograder passes with this flag, then you will receive full points, even if the autograder times out with graphics.</p>
+
+<hr>
+
+<h2 id="q3-6-pts-exact-inference-with-time-elapse">Q3: (6 pts) Exact Inference with Time Elapse</h2>
+
+<p>In the previous question, you implemented belief updates for Pacman based on his observations. Fortunately, Pacman’s observations are not his only source of knowledge about where a ghost may be. Pacman also has knowledge about the ways that a ghost may move; namely that the ghost can not move through a wall or more than one space in one time step.</p>
+
+<p>To understand why this is useful to Pacman, consider the following scenario in which there is Pacman and one Ghost. Pacman receives many observations which indicate the ghost is very near, but then one which indicates the ghost is very far. The reading indicating the ghost is very far is likely to be the result of a buggy sensor. Pacman’s prior knowledge of how the ghost may move will decrease the impact of this reading since Pacman knows the ghost could not move so far in only one move.</p>
+
+<p>In this question, you will implement the <code class="rh">elapseTime</code> method in <code class="rh">ExactInference</code>. The <code class="rh">elapseTime</code> step should, for this problem, update the belief at every position on the map after one time step elapsing. Your agent has access to the action distribution for the ghost through <code class="rh">self.getPositionDistribution</code>. In order to obtain the distribution over new positions for the ghost, given its previous position, use this line of code:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">newPosDist</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">getPositionDistribution</span><span class="p">(</span><span class="n">gameState</span><span class="p">,</span> <span class="n">oldPos</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Where <code class="rh">oldPos</code> refers to the previous ghost position. <code class="rh">newPosDist</code> is a <code class="rh">DiscreteDistribution</code> object, where for each position <code class="rh">p</code> in <code class="rh">self.allPositions</code>, <code class="rh">newPosDist[p]</code> is the probability that the ghost is at position <code class="rh">p</code> at time <code class="rh">t + 1</code>, given that the ghost is at position <code class="rh">oldPos</code> at time <code class="rh">t</code>. Note that this call can be fairly expensive, so if your code is timing out, one thing to think about is whether or not you can reduce the number of calls to <code class="rh">self.getPositionDistribution</code>.</p>
+
+<p><strong>Before typing any code</strong>, write down the equation of the inference problem you are trying to solve. In order to test your predict implementation separately from your update implementation in the previous question, this question will not make use of your update implementation.</p>
+
+<p>Since Pacman is not observing the ghost, this means the ghost’s actions will not impact Pacman’s beliefs. Over time, Pacman’s beliefs will come to reflect places on the board where he believes ghosts are most likely to be given the geometry of the board and what Pacman already knows about their valid movements.</p>
+
+<p>For the tests in this question we will sometimes use a ghost with random movements and other times we will use the <code class="rh">GoSouthGhost</code>. This ghost tends to move south so over time, and without any observations, Pacman’s belief distribution should begin to focus around the bottom of the board. To see which ghost is used for each test case you can look in the <code class="bh">.test</code> files.</p>
+
+<p>To run the autograder for this question and visualize the output:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q3</code></pre></figure>
+
+<p>If you want to run this test (or any of the other tests) without graphics you can add the following flag:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q3 <span class="nt">--no-graphics</span></code></pre></figure>
+
+<p><strong>IMPORTANT</strong> In general, it is possible sometimes for the autograder to time out if running the tests with graphics. To accurately determine whether or not your code is efficient enough, you should run the tests with the <code class="ph">--no-graphics</code> flag. If the autograder passes with this flag, then you will receive full points, even if the autograder times out with graphics.</p>
+
+<p>As you watch the autograder output, remember that lighter squares indicate that pacman believes a ghost is more likely to occupy that location, and darker squares indicate a ghost is less likely to occupy that location. For which of the test cases do you notice differences emerging in the shading of the squares? Can you explain why some squares get lighter and some squares get darker?</p>
+
+<hr>
+
+<h2 id="q4-3-pts-exact-inference-full-test">Q4: (3 pts) Exact Inference Full Test</h2>
+
+<p>Now that Pacman knows how to use both his prior knowledge and his observations when figuring out where a ghost is, he is ready to hunt down ghosts on his own. This question will use your <code class="rh">observeUpdate</code> and <code class="rh">elapseTime</code> implementations together, along with a simple greedy hunting strategy which you will implement for this question. In the simple greedy strategy, Pacman assumes that each ghost is in its most likely position according to his beliefs, then moves toward the closest ghost. Up to this point, Pacman has moved by randomly selecting a valid action.</p>
+
+<p>Implement the <code class="rh">chooseAction</code> method in <code class="rh">GreedyBustersAgent</code> in <code class="bh">bustersAgents.py</code>. Your agent should first find the most likely position of each remaining uncaptured ghost, then choose an action that minimizes the maze distance to the closest ghost.</p>
+
+<p>To find the maze distance between any two positions <code class="rh">pos1</code> and <code class="rh">pos2</code>, use <code class="rh">self.distancer.getDistance(pos1, pos2)</code>. To find the successor position of a position after an action:&lt;/p&gt;</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">successorPosition</span> <span class="o">=</span> <span class="n">Actions</span><span class="p">.</span><span class="n">getSuccessor</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>You are provided with <code class="rh">livingGhostPositionDistributions</code>, a list of <code class="rh">DiscreteDistribution</code> objects representing the position belief distributions for each of the ghosts that are still uncaptured.</p>
+
+<p>If correctly implemented, your agent should win the game in <code class="bh">q4/3-gameScoreTest</code> with a score greater than 700 at least 8 out of 10 times. Note: the autograder will also check the correctness of your inference directly, but the outcome of games is a reasonable sanity check.</p>
+
+<p>To run the autograder for this question and visualize the output:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q4</code></pre></figure>
+
+<p>If you want to run this test (or any of the other tests) without graphics you can add the following flag:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q4 <span class="nt">--no-graphics</span></code></pre></figure>
+
+<p><strong>IMPORTANT</strong> In general, it is possible sometimes for the autograder to time out if running the tests with graphics. To accurately determine whether or not your code is efficient enough, you should run the tests with the <code class="ph">--no-graphics</code> flag. If the autograder passes with this flag, then you will receive full points, even if the autograder times out with graphics.</p>
+
+<hr>
+
+<h2 id="q5-2-pts-approximate-inference-initialization-and-beliefs">Q5: (2 pts) Approximate Inference Initialization and Beliefs</h2>
+
+<p>Approximate inference is very trendy among ghost hunters this season. For the next few questions, you will implement a particle filtering algorithm for tracking a single ghost.</p>
+
+<p>First, implement the functions <code class="rh">initializeUniformly</code> and <code class="rh">getBeliefDistribution</code> in the <code class="rh">ParticleFilter</code> class in <code class="bh">inference.py</code>. A particle (sample) is a ghost position in this inference problem. Note that, for initialization, particles should be evenly (not randomly) distributed across legal positions in order to ensure a uniform prior.</p>
+
+<p><strong>Note that the variable you store your particles in must be a list.</strong> A list is simply a collection of unweighted variables (positions in this case). Storing your particles as any other data type, such as a dictionary, is incorrect and will produce errors. The <code class="rh">getBeliefDistribution</code> method then takes the list of particles and converts it into a <code class="rh">DiscreteDistribution</code> object.</p>
+
+<p>To test your code and run the autograder for this question:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q5</code></pre></figure>
+
+<hr>
+
+<h2 id="q6-5-pts-approximate-inference-observation">Q6: (5 pts) Approximate Inference Observation</h2>
+
+<p>Next, we will implement the <code class="rh">observeUpdate</code> method in the <code class="rh">ParticleFilter</code> class in <code class="bh">inference.py</code>. This method constructs a weight distribution over <code class="rh">self.particles</code> where the weight of a particle is the probability of the observation given Pacman’s position and that particle location. Then, we resample from this weighted distribution to construct our new list of particles.</p>
+
+<p>You should again use the function <code class="rh">self.getObservationProb</code> to find the probability of an observation given Pacman’s position, a potential ghost position, and the jail position. The sample method of the <code class="rh">DiscreteDistribution</code> class will also be useful. As a reminder, you can obtain Pacman’s position using <code class="rh">gameState.getPacmanPosition()</code>, and the jail position using <code class="rh">self.getJailPosition()</code>.</p>
+
+<p><strong>There is one special case that a correct implementation must handle.</strong> When all particles receive zero weight, the list of particles should be reinitialized by calling <code class="rh">initializeUniformly</code>. The total method of the <code class="rh">DiscreteDistribution</code> may be useful.</p>
+
+<p>To run the autograder for this question and visualize the output:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q6</code></pre></figure>
+
+<p>If you want to run this test (or any of the other tests) without graphics you can add the following flag:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q6 <span class="nt">--no-graphics</span></code></pre></figure>
+
+<p><strong>IMPORTANT</strong> In general, it is possible sometimes for the autograder to time out if running the tests with graphics. To accurately determine whether or not your code is efficient enough, you should run the tests with the <code class="ph">--no-graphics</code> flag. If the autograder passes with this flag, then you will receive full points, even if the autograder times out with graphics.</p>
+
+<hr>
+
+<h2 id="q7-5-pts-approximate-inference-with-time-elapse">Q7: (5 pts) Approximate Inference with Time Elapse</h2>
+
+<p>Implement the <code class="rh">elapseTime</code> function in the <code class="rh">ParticleFilter</code> class in <code class="bh">inference.py</code>. This function should construct a new list of particles that corresponds to each existing particle in <code class="rh">self.particles</code> advancing a time step, and then assign this new list back to <code class="rh">self.particles</code>. When complete, you should be able to track ghosts nearly as effectively as with exact inference.</p>
+
+<p>Note that in this question, we will test both the <code class="rh">elapseTime</code> function in isolation, as well as the full implementation of the particle filter combining <code class="rh">elapseTime</code> and <code class="rh">observe</code>.</p>
+
+<p>As in the <code class="rh">elapseTime</code> method of the <code class="rh">ExactInference</code> class, you should use:&lt;/p&gt;</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">newPosDist</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">getPositionDistribution</span><span class="p">(</span><span class="n">gameState</span><span class="p">,</span> <span class="n">oldPos</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>This line of code obtains the distribution over new positions for the ghost, given its previous position (<code class="rh">oldPos</code>). The sample method of the <code class="rh">DiscreteDistribution</code> class will also be useful.</p>
+
+<p>To run the autograder for this question and visualize the output:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q7</code></pre></figure>
+
+<p>If you want to run this test (or any of the other tests) without graphics you can add the following flag:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q7 <span class="nt">--no-graphics</span> </code></pre></figure>
+
+<p>Note that even with no graphics, this test may take several minutes to run.</p>
+
+<p><strong>IMPORTANT</strong> In general, it is possible sometimes for the autograder to time out if running the tests with graphics. To accurately determine whether or not your code is efficient enough, you should run the tests with the <code class="ph">--no-graphics</code> flag. If the autograder passes with this flag, then you will receive full points, even if the autograder times out with graphics.</p>
+
+<h2 id="submission">Submission</h2>
+
+<p>You’re not done yet!</p>
+
+<p>Create a <strong>single zip-file</strong>: <code class="bh">project4.zip</code> with the following zipped structure to Canvas:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>project4\
+    \-- bustersAgents.py 
+    \-- inference.py 
+    \-- group.txt 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Submit this zip-file on Canvas.</p>
+
+<p>The file <code class="bh">group.txt</code> should be structured as follows:</p>
+<ul>
+<li>a group of size 1<br>
+  <pre>Jane Doe, jdoe1</pre></li>
+<li>a group of size 2<br>
+  <pre>Sherlock Holmes, sholmes
+John Watson, jwatson</pre></li>
+<li>a group of size 3<br>
+  <pre>Hermione Granger, hgranger
+Harry Potter, hpotter
+Ronald Weasley, rweasley</pre></li>
+</ul>
+
+
+      </div>
+    </div>
+  </div>
+
+</body></html>

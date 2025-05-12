@@ -1,0 +1,600 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Project 1: Search</title>
+    
+    <link rel="stylesheet" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/assets/css/main.css">
+    <link rel="stylesheet" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/assets/css/code_block.css">
+    <link rel="stylesheet" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/assets/css/github_v2.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css">-->
+    <link rel="stylesheet" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/assets/css/bootstrap.toc.css">
+
+    <!--<script src="assets/js/jquery.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>-->
+    <script src="https://pages.mtu.edu/~lebrown/cs4811-f21/web/assets/js/bootstrap.toc.js"></script>
+    <!--<script src="/assets/js/clipboard.min.js"></script>
+    <script src="/assets/js/codeselect.js"></script>-->
+  </head>
+  <body data-spy="scroll" data-target="#toc">
+  <div class="container">
+    <div class="row">
+      <!-- sidebar, which will move to the top on a small screen -->
+      <div class="col-sm-3">
+        <nav id="toc" data-toggle="toc" class="sticky-top" style="top: 40px"></nav>
+      </div>
+      <!-- main content area -->
+	  <div class="col-sm-9">  
+    	<h1 class="project_title">Project 1: Search in Pacman</h1>
+
+<center> Version 1.003. Last Updated: 09/13/2021.  </center>
+
+<center> <b>Due: 9/29/21, Wed. at 11:59pm </b></center>
+
+<center><img src="assets/images/maze.png" width="400px" /></center>
+<p></p>
+<center>All those colored walls,<br /> Mazes give Pacman the blues,<br /> So teach him to search.</center>
+<p></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>In this project, your Pacman agent will find paths through his maze world, both to reach a particular location and to collect food efficiently. You will build general search algorithms and apply them to Pacman scenarios.</p>
+
+<p>As in Project 0, this project includes an autograder for you to grade your answers on your machine. This can be run with the command:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py </code></pre></figure>
+
+<p>See the autograder tutorial in Project 0 for more information about using the autograder.</p>
+
+<p>The code for this project consists of several Python files, some of which you will need to read and understand in order to complete the assignment, and some of which you can ignore. You can download all the code and supporting files as a zip archive: <code class="bh">search.zip</code></p>
+
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <td><strong>Files you’ll edit</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="bh">search.py</code></td>
+      <td>Where all of your search algorithms will reside.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">searchAgents.py</code></td>
+      <td>Where all of your search-based agents will reside.</td>
+    </tr>
+    <tr>
+      <td><strong>Files to look at, but NOT edit</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="bh">pacman.py</code></td>
+      <td>The main file that runs Pacman games. This file describes a Pacman GameState type, which you use in this project.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">game.py</code></td>
+      <td>The logic behind how the Pacman world works. This file describes several supporting types like AgentState, Agent, Direction, and Grid.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">util.py</code></td>
+      <td>Useful data structures for implementing search algorithms.</td>
+    </tr>
+    <tr>
+      <td><strong>Supporting files you can ignore:</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="bh">autograder.py</code><br /><code class="bh">grading.py</code><br /><code class="bh">projectParams.py</code><br /><code class="bh">searchTestClasses.py</code><br /><code class="bh">submission_autograder.py</code><br /><code class="bh">test_cases/</code><br /><code class="bh">testClasses.py</code><br /><code class="bh">testParser.py</code></td>
+      <td>Files related to autograder infrastructure: test and solution files, test classes, parse autograder test and solution files, etc.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">eightpuzzle.py</code></td>
+      <td>Classes to use eight puzzle as domain for search</td>
+    </tr>
+    <tr>
+      <td><code class="bh">graphicsDisplay.py</code><br /><code class="bh">graphicsUtils.py</code><br /><code class="bh">textDisplay.py</code></td>
+      <td>Graphics for Pacman, Support for Pacman graphics, ASCII graphics for Pacman</td>
+    </tr>
+    <tr>
+      <td><code class="bh">ghostAgents.py</code></td>
+      <td>Agents to control ghosts</td>
+    </tr>
+    <tr>
+      <td><code class="bh">keyboardAgents.py</code></td>
+      <td>Keyboard interfaces to control Pacman</td>
+    </tr>
+    <tr>
+      <td><code class="bh">layout.py</code><br /><code class="bh">layouts/</code></td>
+      <td>Code for reading layout files and storing their contents</td>
+    </tr>
+    <tr>
+      <td><code class="bh">pacmanAgents.py</code></td>
+      <td>Classes on general pacman agents</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+<strong>Files to Edit and Submit</strong>  You will fill in portions of <code class="bh">search.py</code> and <code class="bh">searchAgents.py</code> during the assignment.. Please <em>do not</em> change the other files in this distribution or submit any of our original files other than these files.</p>
+
+<p>Create a <strong>single zip-file</strong>: <code class="bh">project1.zip</code>, that contains the two code files: <code class="bh">search.py</code> and <code class="bh">searchAgents.py</code>, as well as your group information file: <code class="bh">group.txt</code>.  <strong> Submit this zip-file on Canvas </strong>.</p>
+
+<p><strong>Evaluation:</strong>  Your code will be autograded for technical correctness. Please <em>do not</em> change the names of any provided functions or classes within the code, or you will wreak havoc on the autograder. However, the correctness of your implementation – not the autograder’s judgments – will be the final judge of your score. If necessary, I will review and grade assignments individually to ensure that you receive due credit for your work.</p>
+
+<p><strong>Academic Integrity:</strong>  I will be checking your code against other submissions in the class.  <strong>If you copy someone else’s code and submit it with minor changes, I will know.</strong>  The code to detect this is extremely hard to fool, so please don’t try.  I trust you all to submit your own work only; <em>please</em> don’t let me down.  If you do copy someone else’s code, I will pursue the strongest consequences available to me – see the syllabus.</p>
+
+<p><strong>Getting Help:</strong>  You are not alone! If you find yourself stuck on something, contact Dr. Brown for help. Office hours, and the discussion forum are there for your support; please use them. If you can’t make my office hours, let me know and I will schedule more. These projects should be rewarding and instructional, not frustrating and demoralizing.</p>
+
+<p><strong>Discussion:</strong>  Please post to the discussion post about general questions, for all the class to see (and help in answering).  Specific or detailed questions about your solution, can be posted privately to the instructional staff.</p>
+
+<hr />
+
+<h2 id="welcome-to-pacman">Welcome to Pacman</h2>
+
+<p>After downloading the code (<code class="bh">search.zip</code>), unzipping it, and changing to the directory, you should be able to play a game of Pacman by typing the following at the command line:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py</code></pre></figure>
+
+<p>Pacman lives in a shiny blue world of twisting corridors and tasty round treats. Navigating this world efficiently will be Pacman’s first step in mastering his domain.  You can exit the game with <code class="gh">CTRL-c</code> in your terminal.</p>
+
+<p>If you are running Python/Pacman remotely, for instance, <code>ssh</code>-ing into <code>guardian</code> or <code>colossus</code>, then you need to be using Xforwarding to see the graphical displays. Make sure to <a href="#Xforwarding">follow the instructions</a> given.</p>
+
+<p>The simplest agent in <code class="bh">searchAgents.py</code> is called the <code class="rh">GoWestAgent</code>, which always goes West (a trivial reflex agent). This agent can occasionally win:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">--layout</span> testMaze <span class="nt">--pacman</span> GoWestAgent</code></pre></figure>
+
+<p>But, things get ugly for this agent when turning is required:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">--layout</span> tinyMaze <span class="nt">--pacman</span> GoWestAgent</code></pre></figure>
+
+<p>If Pacman gets stuck, you can exit the game by typing <code class="gh">CTRL-c</code> into your terminal.</p>
+
+<p>Soon, your agent will solve not only <code class="rh">tinyMaze</code>, but any maze you want.</p>
+
+<p>Note that <code class="bh">pacman.py</code> supports a number of options that can each be expressed in a long way (e.g., <code class="ph">--layout</code>) or a short way (e.g., <code class="ph">-l</code>). You can see the list of all options and their default values via:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-h</span></code></pre></figure>
+
+<p>Also, all of the commands that appear in this project also appear in <code class="bh">commands.txt</code>, for easy copying and pasting. In UNIX/Mac OS X, you can even run all these commands in order with <code class="ph">bash commands.txt</code>.</p>
+
+<h3 id="autograder">Autograder</h3>
+
+<p>As in Project 0, this project includes an autograder for you to grade your answers on your machine. This can be run with the command:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py</code></pre></figure>
+
+<p>See the autograder tutorial in Project 0 for more information about using the autograder.</p>
+
+<p>You can test single question using the <code class="ph">-q</code> option:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q2</code></pre></figure>
+
+<h3 id="running-project-on-campus-linux-servers--linux-lab-computers-">Running Project on Campus Linux Servers / Linux Lab Computers <a name="Xforwarding"></a></h3>
+
+<p>To securely run a graphical applications on the campus linux machine, you can use X forwarding in an SSH session on your personal computer.</p>
+
+<p>Steps to follow:</p>
+
+<ol>
+  <li><b>Install an X server application on your personal computer:</b><br /> Most Linux distributions have the X server installed, but if your personal computer is running Windows or macOS, you will most likely need to install and run an X server application. 
+    <ul>
+      <li>For Windows, download and install <a href="https://sourceforge.net/projects/xming/">Xming</a>. For X forwarding to work, you'll need to start Xming before connecting to the remote system with your SSH client (for example, PuTTY).</li>
+      <li> For macOS, download and install <a href="https://www.xquartz.org/">XQuartz</a>. For X forwarding to work, you'll need to start XQuartz before making an SSH connection to the remote system. Once XQuartz launches, you can use X forwarding with SSH from the Terminal or from the <code class="ph">xterm</code> application in XQuartz.</li>
+    </ul></li>
+  <li><b>Ensure X forwarding is enabled.</b><br /> Additionally, your personal computer's SSH terminal application must have X11 forwarding enabled:
+    <ul>
+      <li>In Linux, the SSH terminal supports X forwarding by default.</li>
+      <li>In macOS, you <b>may</b> need to edit your ssh_config file (typically found at <code class="bh">/etc/ssh/ssh_config</code> or <code class="bh">~/.ssh/config</code>) if you have trouble using X forwarding. If <code class="bh">ssh_config</code> includes <code class="rh">#X11Forwarding no</code> (or just <code class="rh">X11Forwarding no</code>), uncomment out the line (remove the leading <code class="rh">#</code>), and change it to <code class="rh">X11Forwarding yes</code>.<br />
+      Note, I did not need to complete this step on my mac system.</li>
+      <li>In PuTTY for Windows, you can enable X forwarding in new or saved SSH sessions by selecting Enable X11 forwarding in the "PuTTY Configuration" window (Connection &gt; SSH &gt; X11).</li>
+    </ul></li>
+  <li><b>Use SSH with X forwarding</b>
+    <ul>
+      <li><b>Linux or macOS</b><br />
+        To use SSH with X forwarding on your Linux or macOS personal computer to run the Pacman project on a MTU Linux computer. 
+        <ol>
+          <li>Open your terminal client.</li>
+          <li>On the command line, enter (replacing <code class="rh">username</code> with your ID):
+            <ul>
+              <li>For guardian: 
+                <pre>ssh -X -Y username@guardian.it.mtu.edu</pre></li>
+              <li>For colossus: 
+                <pre>ssh -X -Y username@guardian.it.mtu.edu</pre></li>
+            </ul></li>
+          <li>Log in with your MTU ISO ID</li>
+        </ol>
+      </li>
+      <li><b>PuTTY for Windows</b><br />
+        To use SSH with X forwarding in PuTTY for Windows:
+        <ol>
+          <li>Launch your X server application (for example, Xming).</li>
+          <li>Make sure your connection settings for the remote system have Enable X11 forwarding selected; in the "PuTTY Configuration" window, see Connection  &gt; SSH &gt; X11.</li>
+          <li>Open an SSH session to the desired remote system: guardian.it.mtu.edu or colossus.it.mtu.edu</li>
+          <li>Log in normally with your MTU ISO username and passphrase.</li>
+        </ol> 
+      </li>
+    </ul>
+  </li>
+  <li><b>Test X forwarding</b><br />
+    To test if X forwarding is working, try running <code class="ph">xclock</code>; on the command line, enter:
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">xclock</code></pre></figure>
+
+      If X forwarding is working, the <code class="ph">xclock</code> graphical clock will appear on your personal computer's desktop.
+  </li>
+</ol>
+
+<!--
+1. **Install an X server application on your personal computer:**   
+Most Linux distributions have the X server installed, but if your personal computer is running Windows or macOS, you will most likely need to install and run an X server application. 
+<ul>
+  <li>For Windows, download and install <a href="https://sourceforge.net/projects/xming/">Xming</a>. For X forwarding to work, you'll need to start Xming before connecting to the remote system with your SSH client (for example, PuTTY).</li>
+  <li> For macOS, download and install <a href="https://www.xquartz.org/">XQuartz</a>. For X forwarding to work, you'll need to start XQuartz before making an SSH connection to the remote system. Once XQuartz launches, you can use X forwarding with SSH from the Terminal or from the <code class="ph">xterm</code> application in XQuartz.</li>
+</ul>
+
+2. **Ensure X forwarding is enabled.**   
+Additionally, your personal computer's SSH terminal application must have X11 forwarding enabled:
+<ul>
+  <li>In Linux, the SSH terminal supports X forwarding by default.</li>
+  <li>In macOS, you <b>may</b> need to edit your ssh_config file (typically found at <code class="bh">/etc/ssh/ssh_config</code> or <code class="bh">~/.ssh/config</code>) if you have trouble using X forwarding. If <code class="bh">ssh_config</code> includes <code class="rh">#X11Forwarding no</code> (or just <code class="rh">X11Forwarding no</code>), uncomment out the line (remove the leading <code class="rh">#</code>), and change it to <code class="rh">X11Forwarding yes</code>.<br>
+  Note, I did not need to complete this step on my mac system.</li>
+  <li>In PuTTY for Windows, you can enable X forwarding in new or saved SSH sessions by selecting Enable X11 forwarding in the "PuTTY Configuration" window (Connection > SSH > X11).</li>
+</ul>
+
+3. **Use SSH with X forwarding** 
+<ul>
+  <li><b>Linux or macOS</b><br>
+    To use SSH with X forwarding on your Linux or macOS personal computer to run the Pacman project on a MTU Linux computer. 
+    <ol>
+      <li>Open your terminal client.</li>
+      <li>On the command line, enter (replacing <code class="rh">username</code> with your ID):
+        <ul>
+          <li>For guardian: 
+            <pre>ssh -X -Y username@guardian.it.mtu.edu</pre></li>
+          <li>For colossus: 
+            <pre>ssh -X -Y username@guardian.it.mtu.edu</pre></li>
+        </ul></li>
+      <li>Log in with your MTU ISO ID</li>
+    </ol>
+  </li>
+  <li><b>PuTTY for Windows</b><br>
+    To use SSH with X forwarding in PuTTY for Windows:
+    <ol>
+      <li>Launch your X server application (for example, Xming).</li>
+      <li>Make sure your connection settings for the remote system have Enable X11 forwarding selected; in the "PuTTY Configuration" window, see Connection  > SSH > X11.</li>
+      <li>Open an SSH session to the desired remote system: guardian.it.mtu.edu or colossus.it.mtu.edu</li>
+      <li>Log in normally with your MTU ISO username and passphrase.</li>
+    </ol> 
+  </li>
+</ul>
+
+4. **Test X forwarding**  
+To test if X forwarding is working, try running <code class="ph">xclock</code>; on the command line, enter:
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">xclock</code></pre></figure>
+
+If X forwarding is working, the <code class="ph">xclock</code> graphical clock will appear on your personal computer's desktop.
+-->
+
+<hr />
+
+<h2 id="q1-5-points---dfs">Q1 (5 points) - DFS</h2>
+
+<p><strong>Finding a Fixed Food Dot using Depth First Search</strong> <br />
+In <code class="bh">searchAgents.py</code>, you’ll find a fully implemented <code class="rh">SearchAgent</code>, which plans out a path through Pacman’s world and then executes that path step-by-step. The search algorithms for formulating a plan are not implemented – that’s your job.</p>
+
+<p>As you work through the following questions, you might find it useful to refer to the <a href="#Glossary">object glossary</a>.</p>
+
+<p>First, test that the <code class="rh">SearchAgent</code> is working correctly by running:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> tinyMaze <span class="nt">-p</span> SearchAgent <span class="nt">-a</span> <span class="nv">fn</span><span class="o">=</span>tinyMazeSearch</code></pre></figure>
+
+<p>The command above tells the <code class="rh">SearchAgent</code> to use <code class="rh">tinyMazeSearch</code> as its search algorithm, which is implemented in <code class="bh">search.py</code>. Pacman should navigate the maze successfully.</p>
+
+<p>Now it’s time to write full-fledged generic search functions to help Pacman plan routes! Pseudocode for the search algorithms you’ll write can be found in the lecture slides.</p>
+
+<p><strong><em>Important Note:</em></strong> Remember that a search node must contain not only a state but also the information necessary to reconstruct the path (plan) which gets to that state.</p>
+
+<p><strong><em>Important Note:</em></strong> All of your search functions need to return a list of <em>actions</em> that will lead the agent from the start to the goal. These actions all have to be legal moves (valid directions, no moving through walls).</p>
+
+<p><strong><em>Important Note:</em></strong> Make sure to <b>use</b> the <code class="rh">Stack</code>, <code class="rh">Queue</code> and <code class="rh">PriorityQueue</code> data structures provided to you in <code class="bh">util.py</code>! These data structure implementations have particular properties which are required for compatibility with the autograder.</p>
+
+<p><em>Hint:</em>  Each algorithm is very similar. Algorithms for DFS, BFS, and UCS differ only in the details of how the fringe/frontier is managed. So, concentrate on getting DFS right and the rest should be relatively straightforward. Indeed, one possible implementation requires only a single generic search method which is configured with an algorithm-specific queuing strategy. (Your implementation need <em>not</em> be of this form to receive full credit).</p>
+
+<p>Implement the depth-first search (DFS) algorithm in the <code class="rh">depthFirstSearch</code> function in <code class="bh">search.py</code>. To make your algorithm <em>complete</em>, write the graph search version of DFS, which avoids expanding any already visited states.</p>
+
+<p>Your code should quickly find a solution for:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> tinyMaze <span class="nt">-p</span> SearchAgent
+
+python pacman.py <span class="nt">-l</span> mediumMaze <span class="nt">-p</span> SearchAgent
+
+python pacman.py <span class="nt">-l</span> bigMaze <span class="nt">-z</span> .5 <span class="nt">-p</span> SearchAgent</code></pre></figure>
+
+<p>The Pacman board will show an overlay of the states explored, and the order in which they were explored (brighter red means earlier exploration). Is the exploration order what you would have expected? Does Pacman actually go to all the explored squares on his way to the goal?</p>
+
+<p><em>Hint:</em> If you use a <code class="rh">Stack</code> as your data structure, the solution found by your DFS algorithm for <code class="rh">mediumMaze</code> should have a length of 130 (provided you push successors onto the fringe in the order provided by <code class="rh">getSuccessors</code>; you might get 246 if you push them in the reverse order). Is this a least cost solution? If not, think about what depth-first search is doing that leads to it finding a suboptimal solution.</p>
+
+<p><em>Autograder:</em> To test your implementation, run the autograder:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q1</code></pre></figure>
+
+<h2 id="q2-4-points---bfs">Q2 (4 points) - BFS</h2>
+
+<p><strong>Breadth First Search</strong></p>
+
+<p>Implement the breadth-first search (BFS) algorithm in the <code class="rh">breadthFirstSearch</code> function in <code class="bh">search.py</code>. Again, write a <strong>graph search algorithm</strong> that avoids expanding any already visited states. Test your code the same way you did for depth-first search.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> mediumMaze <span class="nt">-p</span> SearchAgent <span class="nt">-a</span> <span class="nv">fn</span><span class="o">=</span>bfs
+
+python pacman.py <span class="nt">-l</span> bigMaze <span class="nt">-p</span> SearchAgent <span class="nt">-a</span> <span class="nv">fn</span><span class="o">=</span>bfs <span class="nt">-z</span> .5</code></pre></figure>
+
+<p>Does BFS find a least cost solution? If not, check your implementation.</p>
+
+<p><em>Hint:</em> If Pacman moves too slowly for you, try the option <code class="ph">--frameTime 0</code>.</p>
+
+<p><em>Note:</em> If you’ve written your search code generically, your code should work equally well for the eight-puzzle search problem (textbook Section 3.2) without any changes.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python eightpuzzle.py</code></pre></figure>
+
+<p><em>Autograder:</em> To test your implementation, run the autograder:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q2</code></pre></figure>
+
+<hr />
+
+<h2 id="q3-4-points---ucs">Q3 (4 points) - UCS</h2>
+
+<p><strong>Varying the Cost Function</strong></p>
+
+<p>While BFS will find a fewest-actions path to the goal, we might want to find paths that are “best” in other senses. Consider <code class="rh">mediumDottedMaze</code> and <code class="rh">mediumScaryMaze</code>.</p>
+
+<p>By changing the cost function, we can encourage Pacman to find different paths. For example, we can charge more for dangerous steps in ghost-ridden areas or less for steps in food-rich areas, and a rational Pacman agent should adjust its behavior in response.</p>
+
+<p>Implement the uniform-cost graph search algorithm in the <code class="rh">uniformCostSearch</code> function in <code class="bh">search.py</code>. We encourage you to look through <code class="bh">util.py</code> for some data structures that may be useful in your implementation. You should now observe successful behavior in all three of the following layouts, where the agents below are all UCS agents that differ only in the cost function they use (the agents and cost functions are written for you):</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> mediumMaze <span class="nt">-p</span> SearchAgent <span class="nt">-a</span> <span class="nv">fn</span><span class="o">=</span>ucs
+
+python pacman.py <span class="nt">-l</span> mediumDottedMaze <span class="nt">-p</span> StayEastSearchAgent
+
+python pacman.py <span class="nt">-l</span> mediumScaryMaze <span class="nt">-p</span> StayWestSearchAgent</code></pre></figure>
+
+<p><em>Note:</em> You should get very low and very high path costs for the <code class="rh">StayEastSearchAgent</code> and <code class="rh">StayWestSearchAgent</code> respectively, due to their exponential cost functions (see <code class="bh">searchAgents.py</code> for details).</p>
+
+<p><em>Autograder:</em> To test your implementation, run the autograder:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q3</code></pre></figure>
+
+<hr />
+
+<h2 id="q4-4-points---a">Q4 (4 points) - A*</h2>
+
+<p><strong>Astar Search</strong></p>
+
+<p>Implement A* graph search in the empty function <code class="rh">aStarSearch</code> in <code class="bh">search.py</code>. A* takes a heuristic function as an argument. Heuristics take two arguments: a state in the search problem (the main argument), and the problem itself (for reference information). The <code class="rh">nullHeuristic</code> heuristic function in <code class="bh">search.py</code> is a trivial example.</p>
+
+<p>You can test your A* implementation on the original problem of finding a path through a maze to a fixed position using the Manhattan distance heuristic (implemented already as <code class="rh">manhattanHeuristic</code> in <code class="bh">searchAgents.py</code>).</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> bigMaze <span class="nt">-z</span> .5 <span class="nt">-p</span> SearchAgent <span class="nt">-a</span> <span class="nv">fn</span><span class="o">=</span>astar,heuristic<span class="o">=</span>manhattanHeuristic</code></pre></figure>
+
+<p>You should see that A* finds the optimal solution slightly faster than uniform cost search (about 549 vs. 620 search nodes expanded in our implementation, but ties in priority may make your numbers differ slightly). What happens on <code class="rh">openMaze</code> for the various search strategies?</p>
+
+<p><em>Autograder:</em> To test your implementation, run the autograder:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q4</code></pre></figure>
+
+<hr />
+
+<h2 id="q5-3-points---search-problem-formulation">Q5 (3 points) - Search problem formulation</h2>
+
+<p><strong>Finding All the Corners</strong></p>
+
+<p><em>Note: Make sure to complete Question 2 before working on Question 5, because Question 5 builds upon your answer for Question 2.</em></p>
+
+<p>The real power of A* will only be apparent with a more challenging search problem. Now, it’s time to formulate a new problem and design a heuristic for it.</p>
+
+<p>In <em>corner mazes</em>, there are four dots, one in each corner. Our new search problem is to find the shortest path through the maze that touches all four corners (whether the maze actually has food there or not). Note that for some mazes like <code class="rh">tinyCorners</code>, the shortest path does not always go to the closest food first! <em>Hint</em>: the shortest path through <code class="rh">tinyCorners</code> takes 28 steps.</p>
+
+<p>Implement the <code class="rh">CornersProblem</code> search problem in <code class="bh">searchAgents.py</code>. You will need to choose a state representation that encodes all the information necessary to detect whether all four corners have been reached. Now, your search agent should solve:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> tinyCorners <span class="nt">-p</span> SearchAgent <span class="nt">-a</span> <span class="nv">fn</span><span class="o">=</span>bfs,prob<span class="o">=</span>CornersProblem
+
+python pacman.py <span class="nt">-l</span> mediumCorners <span class="nt">-p</span> SearchAgent <span class="nt">-a</span> <span class="nv">fn</span><span class="o">=</span>bfs,prob<span class="o">=</span>CornersProblem</code></pre></figure>
+
+<p>To receive full credit, you need to define an abstract state representation that <em>does not</em> encode irrelevant information (like the position of ghosts, where extra food is, etc.). In particular, do not use a Pacman <code class="rh">GameState</code> as a search state. Your code will be very, very slow if you do (and also wrong).</p>
+
+<p><em>Hint:</em> The only parts of the game state you need to reference in your implementation are the starting Pacman position and the location of the four corners.</p>
+
+<p>Our implementation of <code class="rh">breadthFirstSearch</code> expands just under 2000 search nodes on <code class="rh">mediumCorners</code>. However, heuristics (used with A* search) can reduce the amount of searching required.</p>
+
+<p><em>Autograder:</em> To test your implementation, run the autograder:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q5</code></pre></figure>
+
+<hr />
+
+<h2 id="q6-3-points---heuristic">Q6 (3 points) - Heuristic</h2>
+
+<p><strong>Corners Problem: Heuristic</strong></p>
+
+<p><em>Note: Make sure to complete Question 4 before working on Question 6, because Question 6 builds upon your answer for Question 4.</em></p>
+
+<p>Implement a non-trivial, consistent heuristic for the <code class="rh">CornersProblem</code> in <code class="rh">cornersHeuristic</code>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> mediumCorners <span class="nt">-p</span> AStarCornersAgent <span class="nt">-z</span> 0.5</code></pre></figure>
+
+<p><em>Note:</em><code class="rh">AStarCornersAgent</code> is a shortcut for</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nt">-p</span> SearchAgent <span class="nt">-a</span> <span class="nv">fn</span><span class="o">=</span>aStarSearch,prob<span class="o">=</span>CornersProblem,heuristic<span class="o">=</span>cornersHeuristic</code></pre></figure>
+
+<p><strong><em>Admissibility vs. Consistency:</em></strong> Remember, heuristics are just functions that take search states and return numbers that estimate the cost to a nearest goal. More effective heuristics will return values closer to the actual goal costs. To be <em>admissible</em>, the heuristic values must be lower bounds on the actual shortest path cost to the nearest goal (and non-negative). To be <em>consistent</em>, it must additionally hold that if an action has cost <em>c</em>, then taking that action can only cause a drop in heuristic of at most <em>c</em>.</p>
+
+<p>Remember that admissibility isn’t enough to guarantee correctness in graph search – you need the stronger condition of consistency. However, admissible heuristics are usually also consistent, especially if they are derived from problem relaxations. Therefore it is usually easiest to start out by brainstorming admissible heuristics. Once you have an admissible heuristic that works well, you can check whether it is indeed consistent, too. The only way to guarantee consistency is with a proof. However, inconsistency can often be detected by verifying that for each node you expand, its successor nodes are equal or higher in in f-value. Moreover, if UCS and A* ever return paths of different lengths, your heuristic is inconsistent. This stuff is tricky!</p>
+
+<p><strong><em>Non-Trivial Heuristics:</em></strong> The trivial heuristics are the ones that return zero everywhere (UCS) and the heuristic which computes the true completion cost. The former won’t save you any time, while the latter will timeout the autograder. You want a heuristic which reduces total compute time, though for this assignment the autograder will only check node counts (aside from enforcing a reasonable time limit).</p>
+
+<p><strong><em>Grading:</em></strong> Your heuristic must be a non-trivial non-negative consistent heuristic to receive any points. Make sure that your heuristic returns 0 at every goal state and never returns a negative value. Depending on how few nodes your heuristic expands, you’ll be graded:</p>
+
+<table align="center" border="1" cellpadding="10">
+  <thead>
+    <tr>
+      <th>Num. of nodes expanded</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>more than 2000</td>
+      <td>0/3</td>
+    </tr>
+    <tr>
+      <td>at most 2000</td>
+      <td>1/3</td>
+    </tr>
+    <tr>
+      <td>at most 1600</td>
+      <td>2/3</td>
+    </tr>
+    <tr>
+      <td>at most 1200</td>
+      <td>3/3</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+<em>Remember:</em> If your heuristic is inconsistent, you will receive <em>no</em> credit, so be careful!</p>
+
+<p><em>Autograder:</em> To test your implementation, run the autograder:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q6</code></pre></figure>
+
+<hr />
+
+<h2 id="q7-4-points---search-problem">Q7 (4 points) - Search problem</h2>
+
+<p><strong>Eating All the Dots</strong></p>
+
+<p><em>Note: Make sure to complete Question 4 before working on Question 7, because Question 7 builds upon your answer for Question 4.</em></p>
+
+<p>Now we’ll solve a hard search problem: eating all the Pacman food in as few steps as possible. For this, we’ll need a new search problem definition which formalizes the food-clearing problem: <code class="rh">FoodSearchProblem</code> in <code class="bh">searchAgents.py</code> (implemented for you). A solution is defined to be a path that collects all of the food in the Pacman world. For the present project, solutions do not take into account any ghosts or power pellets; solutions only depend on the placement of walls, regular food and Pacman. (Of course ghosts can ruin the execution of a solution! We’ll get to that in the next project.) If you have written your general search methods correctly, <code class="rh">A*</code> with a null heuristic (equivalent to uniform-cost search) should quickly find an optimal solution to <code class="rh">testSearch</code> with no code change on your part (total cost of 7).</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> testSearch <span class="nt">-p</span> AStarFoodSearchAgent</code></pre></figure>
+
+<p><em>Note:</em><code class="rh"> AStarFoodSearchAgent</code> is a shortcut for 
+<code class="language-html highlighter-rouge">-p SearchAgent -a fn=astar,prob=FoodSearchProblem,heuristic=foodHeuristic</code>.</p>
+
+<p>You should find that UCS starts to slow down even for the seemingly simple <code class="rh">tinySearch</code>. As a reference, our implementation takes 0.5 seconds (0.4s on a new i7 computer) to find a path of length 27 after expanding 5057 search nodes.</p>
+
+<p>Fill in <code class="rh">foodHeuristic</code> in <code class="bh">searchAgents.py</code> with a <emph> consistent </emph> heuristic for the <code class="rh">FoodSearchProblem</code>. Try your agent on the <code class="rh">trickySearch</code> board:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> trickySearch <span class="nt">-p</span> AStarFoodSearchAgent</code></pre></figure>
+
+<p>Our UCS agent finds the optimal solution in about 4 seconds (2.4 s on a new i7 computer), exploring over 16,000 nodes.</p>
+
+<p>Any non-trivial non-negative consistent heuristic will receive 1 point. Make sure that your heuristic returns 0 at every goal state and never returns a negative value. Depending on how few nodes your heuristic expands, you’ll get additional points:</p>
+
+<table align="center" border="1" cellpadding="10">
+  <thead>
+    <tr>
+      <th>Num. of nodes expanded</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>more than 15000</td>
+      <td>1/4</td>
+    </tr>
+    <tr>
+      <td>at most 15000</td>
+      <td>2/4</td>
+    </tr>
+    <tr>
+      <td>at most 12000</td>
+      <td>3/4</td>
+    </tr>
+    <tr>
+      <td>at most 9000</td>
+      <td>4/4</td>
+    </tr>
+    <tr>
+      <td>at most 7000</td>
+      <td>5/4 (extra credit)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+<em>Remember:</em> If your heuristic is inconsistent, you will receive <em>no</em> credit, so be careful! Can you solve <code class="rh">mediumSearch</code> in a short time? If so, we’re either very, very impressed, or your heuristic is inconsistent.</p>
+
+<p><em>Autograder:</em> To test your implementation, run the autograder:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q7</code></pre></figure>
+
+<hr />
+
+<h2 id="q8-2-points---suboptimal-search">Q8 (2 points) - Suboptimal Search</h2>
+
+<p>Sometimes, even with A* and a good heuristic, finding the optimal path through all the dots is hard. In these cases, we’d still like to find a reasonably good path, quickly. In this section, you’ll write an agent that always greedily eats the closest dot. <code class="rh">ClosestDotSearchAgent</code> is implemented for you in <code class="bh">searchAgents.py</code>, but it’s missing a key function that finds a path to the closest dot.</p>
+
+<p>Implement the function <code class="rh">findPathToClosestDot</code> in <code class="bh">searchAgents.py</code>. Our agent solves this maze (suboptimally!) in under a second with a path cost of 350:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> bigSearch <span class="nt">-p</span> ClosestDotSearchAgent <span class="nt">-z</span> .5</code></pre></figure>
+
+<p><em>Hint:</em> The quickest way to complete <code class="rh">findPathToClosestDot</code> is to fill in the <code class="rh">AnyFoodSearchProblem</code>, which is missing its goal test. Then, solve that problem with an appropriate search function. The solution should be very short!</p>
+
+<p>Your <code class="rh">ClosestDotSearchAgent</code> won’t always find the shortest possible path through the maze. Make sure you understand why and try to come up with a small example where repeatedly going to the closest dot does not result in finding the shortest path for eating all the dots.</p>
+
+<p><em>Autograder:</em> To test your implementation, run the autograder:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q8</code></pre></figure>
+
+<h2 id="submission">Submission</h2>
+
+<p>You’re not done yet!</p>
+
+<p>Create a <strong>single zip-file</strong>: <code class="bh">project1.zip</code>, that contains the two code files: <code class="bh">search.py</code> and <code class="bh">searchAgents.py</code>, as well as your group information file: <code class="bh">group.txt</code>.  <strong> Submit this zip-file on Canvas </strong>.</p>
+
+<p>The file <code class="bh">group.txt</code> should be structured as follows:</p>
+<ul>
+<li>a group of size 1<br />
+  <pre>Jane Doe, jdoe1</pre></li>
+<li>a group of size 2<br />
+  <pre>Sherlock Holmes, sholmes
+John Watson, jwatson</pre></li>
+<li>a group of size 3<br />
+  <pre>Hermione Granger, hgranger
+Harry Potter, hpotter
+Ronald Weasley, rweasley</pre></li>
+</ul>
+
+<h3 id="object-glossary"><a name="Glossary">Object Glossary</a></h3>
+
+<p>Here’s a glossary of the key objects in the code base related to search problems, for your reference:</p>
+
+<dl>
+  <dt><code class="rh">SearchProblem</code> - <code class="bh">search.py</code></dt>
+  <dd>A SearchProblem is an abstract object that represents the state space, successor function, costs, and goal state of a problem.  You will interact with any SearchProblem only through the methods defined at the top of <code class="bh">search.py</code></dd><br />
+  <dt><code class="rh">PositionSearchProblem</code> - <code class="bh">searchAgents.py</code></dt>
+  <dd>A specific type of SearchProblem that you will be working with --- it corresponds to searching for a single pellet in a maze.  </dd><br />
+  <!--<dt><code class="rh">CornersProblem</code> - <code class="bh">searchAgents.py</code></dt>
+  <dd>A specific type of SearchProblem that you will define --- it corresponds to searching for a path through all four corners of a maze.  </dd><br>
+  <dt><code class="rh">FoodSearchProblem</code> - <code class="bh">searchAgents.py</code></dt>
+  <dd>A specific type of SearchProblem that you will be working with --- it corresponds to searching for a way to eat all the pellets in a maze.  </dd><br>-->
+  <dt>Search Function</dt>
+  <dd>A search function is a function which takes an instance of SearchProblem as a parameter, runs some algorithm, and returns a sequence of actions that lead to a goal.  Example of search functions are <code class="rh">depthFirstSearch</code> and <code class="rh">breadthFirstSearch</code>, which you have to write.  You are provided <code class="rh">tinyMazeSearch</code> which is a very bad search function that only works correctly on <code class="rh">tinyMaze</code></dd><br />
+  <dt><code class="rh">SearchAgent</code> - <code class="bh">searchAgents.py</code></dt>
+  <dd><code class="rh">SearchAgent</code> is is a class which implements an Agent (an object that interacts with the world) and does its planning through a search function.  The <code class="rh">SearchAgent</code> first uses the search function provided to make a plan of actions to take to reach the goal state, and then executes the actions one at a time.</dd>
+</dl>
+
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

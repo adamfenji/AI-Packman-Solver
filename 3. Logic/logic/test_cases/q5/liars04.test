@@ -1,0 +1,7 @@
+class: "CNFTest"
+
+description: "At least one of them lied and at least one told the truth"
+test: "liars.rule_truth()"
+literals: "[1, 2, 3]"
+minsize: "2"
+minsize_msg: "no clauses should state facts, i.e., all clauses should have at least two statements"

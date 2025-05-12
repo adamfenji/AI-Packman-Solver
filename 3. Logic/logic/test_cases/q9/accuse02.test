@@ -1,0 +1,6 @@
+class: "CNFTest"
+
+test: "cluedo.accuse('sc', 'pe', 'pi', 'bi', False)"
+description: "Ms. Scarlet (player) incorrectly accuses Mrs. Peacock with the Lead Pipe in the Billiard Room."
+literals: "[5, 11, 19, 131, 137, 145]"
+clauses: "4"

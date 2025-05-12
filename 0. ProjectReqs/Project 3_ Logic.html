@@ -1,0 +1,1098 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Project 3: Logic</title>
+    
+    <link rel="stylesheet" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/assets/css/main.css">
+    <link rel="stylesheet" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/assets/css/code_block.css">
+    <link rel="stylesheet" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/assets/css/github_v2.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css">-->
+    <link rel="stylesheet" href="https://pages.mtu.edu/~lebrown/cs4811-f21/web/assets/css/bootstrap.toc.css">
+
+    <!--<script src="assets/js/jquery.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>-->
+    <script src="https://pages.mtu.edu/~lebrown/cs4811-f21/web/assets/js/bootstrap.toc.js"></script>
+    <!--<script src="/assets/js/clipboard.min.js"></script>
+    <script src="/assets/js/codeselect.js"></script>-->
+    
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+>
+</script>
+<!--<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://vincenttam.github.io/javascripts/MathJaxLocal.js"
+>-->
+</script>
+
+  </head>
+  <body data-spy="scroll" data-target="#toc">
+  <div class="container">
+    <div class="row">
+      <!-- sidebar, which will move to the top on a small screen -->
+      <div class="col-sm-3">
+        <nav id="toc" data-toggle="toc" class="sticky-top" style="top: 40px"></nav>
+      </div>
+      <!-- main content area -->
+	  <div class="col-sm-9">  
+    	<h1 class="project_title">Project 3 - Logic</h1>
+
+<center> Version 1.002. Last Updated: 10/10/2021.  </center>
+
+<center> <b>Due: 10/22/21, Fri. at 11:59pm </b></center>
+
+<center><img src="assets/images/LogicalPacman.png" width="400px" /></center>
+<p></p>
+<center>Logical Pacman,<br /> Food is good AND ghosts are bad,<br /> Spock would be so proud</center>
+<p></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>In this project, you will use/write simple Python functions that generate logical sentences describing Pacman physics, aka pacphysics, and the game Clue. You will use a SAT solver, pycosat, to solve the logical inference tasks associated with planning (generating action sequences to reach goal locations) and playing Clue.</p>
+
+<p>As in previous programming assignments, this assignment includes an autograder for you to grade your answers on your machine. This can be run with the command:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py </code></pre></figure>
+
+<p>The code for this project consists of several Python files, some of which you will need to read and understand in order to complete the assignment, and some of which you can ignore. You can download all the code and supporting files as a zip archive:<code class="bh">logic.zip</code>.</p>
+
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <td><strong>Files you’ll edit</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="bh">logicPlan.py</code></td>
+      <td>Where you will put your code for the various logical agents (Q1-4).</td>
+    </tr>
+    <tr>
+      <td><code class="bh">liars.py</code></td>
+      <td>Where you will put your code for the Liars logic question (Q5).</td>
+    </tr>
+    <tr>
+      <td><code class="bh">cluedo.py</code></td>
+      <td>Where you will put your code for the Clue logic questions (Q6-10).</td>
+    </tr>
+    <tr>
+      <td><strong>Files you might want to look at</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="bh">logic.py</code></td>
+      <td>Propsitional logic code originally from https://code.google.com/p/aima-python/ with modifications for our project. There are several useful utility functions for working with logic in here.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">logicAgents.py</code></td>
+      <td>The file that defines in logical planning form the two specific problems that Pacman will encounter in this project.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">pycosat_test.py</code></td>
+      <td>Quick test main function that checks that the pycosat module is installed correctly.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">cluedo_game.py</code></td>
+      <td>Implements running the cluedo game.  Has helper functions such as <code class="rh">printNotepad</code> that may be helpful in your debugging.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">game.py</code></td>
+      <td>The internal simulator code for the Pacman world. The only thing you might want to look at in here is the Grid class.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">cnf.py</code></td>
+      <td>Tests for satisfiability with the pycosat SAT solver.</td>
+    </tr>
+    <tr>
+      <td><strong>Files you can ignore:</strong></td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="bh">pacman.py</code></td>
+      <td>The main that runs Pacman games.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">logic_util.py</code></td>
+      <td>Utility functions for logic.py</td>
+    </tr>
+    <tr>
+      <td><code class="bh">util.py</code></td>
+      <td>Utility functions primarily for other projects.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">autograder.py</code><br /><code class="bh">grading.py</code><br /><code class="bh">projectParams.py</code><br /><code class="bh">logicTestClasses.py</code><br /><code class="bh">submission_autograder.py</code><br /><code class="bh">test_cases/</code><br /><code class="bh">testClasses.py</code><br /><code class="bh">testParser.py</code></td>
+      <td>Files related to autograder infrastructure for Project 2: test and solution files, test classes, parse autograder test and solution files, etc.</td>
+    </tr>
+    <tr>
+      <td><code class="bh">graphicsDisplay.py</code><br /><code class="bh">graphicsUtils.py</code><br /><code class="bh">textDisplay.py</code></td>
+      <td>Graphics for Pacman, Support for Pacman graphics, ASCII graphics for Pacman</td>
+    </tr>
+    <tr>
+      <td><code class="bh">ghostAgents.py</code></td>
+      <td>Agents to control ghosts</td>
+    </tr>
+    <tr>
+      <td><code class="bh">keyboardAgents.py</code></td>
+      <td>Keyboard interfaces to control Pacman</td>
+    </tr>
+    <tr>
+      <td><code class="bh">layout.py</code><br /><code class="bh">layouts/</code></td>
+      <td>Code for reading layout files and storing their contents</td>
+    </tr>
+    <tr>
+      <td><code class="bh">agents.py</code></td>
+      <td>Classes on general pacman agents</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<p><strong>Files to Edit:</strong>  You will fill in portions of <code class="bh">logicPlan.py</code>, <code class="bh">liars.py</code> and <code class="bh">cluedo.py</code>during the assignment.  Please <em>do not</em> change the other files in this distribution or submit any of our original files other than this file.</p>
+
+<p><strong>Evaluation:</strong>  Your code will be autograded for technical correctness. Please <em>do not</em> change the names of any provided functions or classes within the code, or you will wreak havoc on the autograder. However, the correctness of your implementation – not the autograder’s judgements – will be the final judge of your score. If necessary, I will review and grade assignments individually to ensure that you receive due credit for your work.</p>
+
+<p><strong>Academic Dishonesty:</strong>  I will be checking your code against other submissions in the class for logical redundancy. <strong>If you copy someone else’s code and submit it with minor changes, I will know.</strong>  The code to detect this is extremely hard to fool, so please don’t try.  I trust you all to submit your own work only; <em>please</em> don’t let me down.  If you do copy someone else’s code, I will pursue the strongest consequences available to me – see the syllabus.</p>
+
+<p><strong>Getting Help:</strong>  You are not alone! If you find yourself stuck on something, contact Dr. Brown for help. Office hours, and the discussion forum are there for your support; please use them. If you can’t make my office hours, let me know and I will schedule more. These projects should be rewarding and instructional, not frustrating and demoralizing.</p>
+
+<p><strong>Discussion:</strong>  Please post to the discussion post about general questions, for all the class to see (and help in answering).  Specific or detailed questions about your solution, can be posted privately to the instructional staff.</p>
+
+<h2 id="propositional-logic">Propositional Logic</h2>
+
+<p>In this section, we give a brief overview of <strong>propositional logic</strong> (a.k.a. <em>Boolean logic</em> and <em>sentential logic</em>). For a more complete introduction, see Chapter 7 of your textbook and lecture materials.</p>
+
+<p>Propositional logic is a simple logic based upon the Boolean values <em>true</em> and <em>false</em>. Many programmers will find propositional logic intuitive from exposure to Boolean types and logical operators which occur frequently in programming.</p>
+
+<p>In discussing a logic, one needs to address both the <strong>syntax</strong> (structure) and the <strong>semantics</strong> (meaning) of the language. Just as the syntax of a programming language defines rules for what constitutes a well-formed program, the syntax of a logical language defines rules for what constitutes a well-formed sentence of the logic. Just as programming language specifications help the programmer understand the expected behavior of a program, the semantics of a logical language define the meaning of well-formed sentences of the logic. We will present the syntax and semantics of propositional logic one simple piece at a time.</p>
+
+<p>The <strong>atomic sentence</strong> is the simplest fundamental unit of the language. The syntax of an atomic sentence is either the constant <em>true</em>, the constant <em>false</em>, or a symbol. Each symbol is associated with a statement which can be true or false. For example, $pi_{wh}$ may symbolize the statement that “The Mrs. White player is holding the Lead Pipe card.” This statement may be true or false. In general, $c_p$ will symbolize the statement “The card $c$ is in place $p$.”</p>
+
+<p>Often, the symbols used for atomic sentences are capital alphabetic characters $A$,$B$,$C$,…,$Z$, but we are free to choose whichever symbols are convenient. However, just as with commenting variables in a program, it is important to attach meanings to these symbols to ground them in the reality they represent.</p>
+
+<blockquote>
+  <p><strong>Example Problem</strong>: Suppose that liars always speak what is false, and truth-tellers always speak what is true. Further suppose that Amy, Bob, and Cal are each either a liar or truth-teller. Amy says, “Bob is a liar.” Bob says, “Cal is a liar.” Cal says, “Amy and Bob are liars.” Which, if any, of these people are truth-tellers?</p>
+</blockquote>
+
+<blockquote>
+  <p>The atomic sentences for this problem are as follows:</p>
+</blockquote>
+
+<blockquote>
+  <ul>
+    <li>$A$ - Amy is a truth-teller</li>
+    <li>$B$ - Bob is a truth-teller</li>
+    <li>$C$ - Cal is a truth-teller</li>
+  </ul>
+</blockquote>
+
+<p><strong>Negation ($\neg$, “not”):</strong> More complex sentences may be built from these. The <strong>negation</strong> of $A$, denoted $\neg A$ (read “not” $A$), means the <em>opposite</em> of $A$, and thus means “Amy is <em>not</em> a truth-teller.” Given our constraint that Amy is either a truth-teller or liar, this also means “Amy is a liar.” The negation operator $\neg$ operates on a single sentence, negating its meaning. Thus for propositional logic sentence $S$, $\neg S$ has the opposite truth value. We may thus express the semantics of $\neg$ in a truth table:</p>
+
+<!-- <table class="truth_table">
+<thead>
+  <tr>
+    <td>$S$</td>
+    <td>$\neg S$ </td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>_false_</td>
+    <td>_true_</td>
+  </tr>
+  <tr>
+    <td>_true_</td>
+    <td>_false_</td>
+  </tr>
+</tbody>
+</table> -->
+
+<table class="truth_table table-bordered">
+  <thead>
+    <tr>
+      <th>$s$</th>
+      <th>$\neg s$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><em>false</em></td>
+      <td><em>true</em></td>
+    </tr>
+    <tr>
+      <td><em>true</em></td>
+      <td><em>false</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br />
+A <strong>literal</strong> is an atomic sentence or its negation. For example, $A$, $\neg A$, $B$, $\neg B$, $C$, and $\neg C$ are all literals.</p>
+
+<p><strong>Conjunction ($\wedge$ “and”):</strong> We have seen how “Amy is a liar.” can be represented as $\neg A$. Similarly, “Bob is a liar.” can be represented as $\neg B$. To say “Amy and Bob are liars.” is to say that both $\neg A$ and $\neg B$ are true. We denote this <strong>conjunction</strong> of sentences as $\neg A \wedge \neg B$ (read “not A and not B”). If either or both of the two subsentences $\neg A$ or $\neg B$ are false, then the conjunction is false as well. The semantics of $\wedge$ for sentences $S_1$ and $S_2$ are thus expressed in this truth table:</p>
+
+<table class="truth_table table-bordered">
+  <thead>
+    <tr>
+      <th>$S_1$</th>
+      <th>$S_2$</th>
+      <th>$S_1 \wedge S_2$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><em>false</em></td>
+      <td><em>false</em></td>
+      <td><em>false</em></td>
+    </tr>
+    <tr>
+      <td><em>false</em></td>
+      <td><em>true</em></td>
+      <td><em>false</em></td>
+    </tr>
+    <tr>
+      <td><em>true</em></td>
+      <td><em>false</em></td>
+      <td><em>false</em></td>
+    </tr>
+    <tr>
+      <td><em>true</em></td>
+      <td><em>true</em></td>
+      <td><em>true</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<p><strong>Disjunction ($\vee$ “or”):</strong> Suppose that you are playing Miss Scarlett and Mrs. White suggests that Colonel Mustard committed the murder with the knife in the hall. Mr. Green refutes this suggestion by privately showing one of the cards Mustard, Knife, or Hall privately to Mrs. White. You hold the Mustard card. Thus you know that Mr. Green has either the Knife card or the Hall card. We may represent this knowledge as the <strong>disjunction</strong> $kn_{gr} \vee ha_{gr}$ (read ‘‘$kn_{gr}$ or $ha_{gr}$’’). If either or both of the two subsentences $\neg A$ or $\neg B$ are true, then the disjunction is true as well. The semantics of $\vee$ for sentences $S_1$ and $S_2$ are thus expressed in this truth table:</p>
+
+<table class="truth_table table-bordered">
+  <thead>
+    <tr>
+      <th>$S_1$</th>
+      <th>$S_2$</th>
+      <th>$S_1 \vee S_2$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><em>false</em></td>
+      <td><em>false</em></td>
+      <td><em>false</em></td>
+    </tr>
+    <tr>
+      <td><em>false</em></td>
+      <td><em>true</em></td>
+      <td><em>true</em></td>
+    </tr>
+    <tr>
+      <td><em>true</em></td>
+      <td><em>false</em></td>
+      <td><em>true</em></td>
+    </tr>
+    <tr>
+      <td><em>true</em></td>
+      <td><em>true</em></td>
+      <td><em>true</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<p><strong>Conditional ($\Rightarrow$ “implies”):</strong> In our truth-teller and liar example, Amy says “Bob is a liar.”. If Amy is a truth-teller ($A$), then we know that Bob is a liar ($\neg B$). We may represent this knowledge as the conditional (a.k.a. implication) $A \Rightarrow \neg B$ (read “A implies not B”). If the first subsentence $S_1$, the antecedent, is true, and the second subsentence $S_2$, the consequent, is false, then the conditional is false. Otherwise, it is true. The semantics of $\Rightarrow$ for sentences $S_1$ and $S_2$ are thus expressed in this truth table:</p>
+
+<table class="truth_table table-bordered">
+  <thead>
+    <tr>
+      <th>$S_1$</th>
+      <th>$S_2$</th>
+      <th>$S_1 \Rightarrow S_2$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><em>false</em></td>
+      <td><em>false</em></td>
+      <td><em>true</em></td>
+    </tr>
+    <tr>
+      <td><em>false</em></td>
+      <td><em>true</em></td>
+      <td><em>true</em></td>
+    </tr>
+    <tr>
+      <td><em>true</em></td>
+      <td><em>false</em></td>
+      <td><em>false</em></td>
+    </tr>
+    <tr>
+      <td><em>true</em></td>
+      <td><em>true</em></td>
+      <td><em>true</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<p><strong>Biconditional ($\Leftrightarrow$ “if and only if”):</strong> In the previous example, $A \Rightarrow \neg B$ is not the only fact we represent from Amy saying that Bob is a liar. We also know that if we find that Bob is, in fact, a liar, then Amy must be a truth-teller. That is $\neg B \Rightarrow A$. Combining these facts in a conjunction, we fully represent the knowledge as ($A \Rightarrow \neg B$) $\wedge$ ($\neg B \Rightarrow A$). This conjunction of two conditionals with antecedents and consequents reversed has a more compact representation as the biconditional $A \Leftrightarrow \neg B$. If the first subsentence $S_1$ and the second subsentence $S_2$ have the same truth value, the biconditional is true. Otherwise, it is false. The semantics of $\Leftrightarrow$ for sentences $S_1$ and $S_2$ are thus expressed in this truth table:</p>
+
+<table class="truth_table table-bordered">
+  <thead>
+    <tr>
+      <th>$S_1$</th>
+      <th>$S_2$</th>
+      <th>$S_1 \Leftrightarrow S_2$</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><em>false</em></td>
+      <td><em>false</em></td>
+      <td><em>true</em></td>
+    </tr>
+    <tr>
+      <td><em>false</em></td>
+      <td><em>true</em></td>
+      <td><em>false</em></td>
+    </tr>
+    <tr>
+      <td><em>true</em></td>
+      <td><em>false</em></td>
+      <td><em>false</em></td>
+    </tr>
+    <tr>
+      <td><em>true</em></td>
+      <td><em>true</em></td>
+      <td><em>true</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<p>As with arithmetic expressions, there is an order of precedence of the operators. The negation operator ($\neg$) has highest precedence, followed by $\wedge$, $\vee$, $\Rightarrow$, and $\Leftrightarrow$. Thus,</p>
+
+\[\begin{aligned}
+        \neg A \wedge B &amp; \text{ means }\quad (\neg A) \wedge B \\
+        A \vee B \Leftrightarrow C &amp; \text{ means}\quad (A \vee B) \Leftrightarrow C \\
+        \neg A \vee B \wedge C &amp; \text{ means}\quad (\neg A) \vee (B \wedge C)
+    \end{aligned}\]
+
+<p>Here, we’ve used parentheses to clarify operator grouping, but parentheses may also be used to group operations as desired (e.g. $\neg (A \wedge B)$), or improve readability (e.g. $(A \wedge B) \vee (C \wedge D) \vee (E \wedge F )$).</p>
+
+<p>The set of sentences that represent our knowledge is called our <strong>knowledge base</strong>. For example, the knowledge base for our liars and truth-tellers problem is:</p>
+
+\[\{ A \Leftrightarrow \neg B,  B \Leftrightarrow \neg C, 
+        C \Leftrightarrow \neg A \wedge \neg B \}\]
+
+<p>Note that these sentences could all be combined with conjunction in a single sentence which expresses all knowledge of the knowledge base:</p>
+
+\[(A \Leftrightarrow \neg B) \;\wedge\;  (B \Leftrightarrow \neg C) \;\wedge\; (C \Leftrightarrow \neg A \wedge \neg B )\]
+
+<p>If we think of our atomic sentence symbols as boolean variables, then an assignment to all variables would be called a <strong>truth assignment</strong>. A truth assignment which makes a sentence $s$ true is said to <strong>satisfy</strong> $s$. This satisfying truth assignment is also called a <strong>model</strong> of $s$.</p>
+
+<p>Another way to think about it is that each truth assignment is a “world”, and that the models of $s$ are “possible worlds”. If and only if $s$ has a model, $s$ is said to be <strong>satisfiable</strong>. If and only if $s$ has no model, $s$ is said to be <strong>unsatisfiable</strong>. If and only if every truth assignment is a model of $s$, then $s$ is said to be <strong>valid</strong> or a <strong>tautology</strong>.</p>
+
+<p>Now let us consider two sentences $S_1$ and $S_2$. We say that $S_1$ <strong>entails</strong> $S_2$, denoted $S_1 \models S_2$,<br />
+if and only if every model of $S_1$ is also a model of $S_2$. Sometimes this is expressed by saying that “$S_2$ logically follows from $S_1$”. Two sentences $S_1$ and $S_2$ are <strong>logically equivalent</strong> if and only if $S_1 \models S_2$ and $S_2 \models S_1$.</p>
+
+<h3 id="conjunctive-normal-form-cnf">Conjunctive Normal Form (CNF)</h3>
+
+<p>Propositional knowledge which is expressed as a <em>conjunction</em> of <em>disjunctions of literals</em> is said to be in <strong>conjunctive normal form</strong> (CNF). Recall that a literal is an atomic sentence or a negated atomic sentence. A disjunction (or) of literals is often referred to as a <strong>clause</strong>. Conjunctive normal form is a conjunction (and) of such clauses.</p>
+
+<p>Any sentence can be converted to CNF. We will describe the steps of this process and show how the liar and truth-teller example knowledge base may be converted to CNF.</p>
+
+<ol>
+  <li><strong>Eliminate $\Leftrightarrow$.</strong> Replace each occurrence of $S_1 \Leftrightarrow S_2$ with the equivalent $(S_1 \Rightarrow S_2) \wedge (S_2 \Rightarrow S_1)$.  Thus, the knowledge base</li>
+</ol>
+
+\[\{ A \Leftrightarrow \neg B,  B \Leftrightarrow \neg C, 
+        C \Leftrightarrow \neg A \wedge \neg B \}\]
+
+<p>may be rewritten as</p>
+
+\[\{ (A \Rightarrow \neg B) \wedge (\neg B \Rightarrow A), (B \Rightarrow \neg C) \wedge (\neg C \Rightarrow B), (C \Rightarrow \neg A \wedge \neg B) \wedge (\neg A \wedge \neg B \Rightarrow C) \}\]
+
+<p>We noted before that the set of knowledge base sentences could all be combined with conjunction in a single equivalent sentence. At any time, we can use this equivalence in the opposite direction to separate conjunctions into separate sentences of the knowledge base:</p>
+
+\[\{ A \Rightarrow \neg B, \neg B \Rightarrow A, B \Rightarrow \neg C, 
+        \neg C \Rightarrow B, C \Rightarrow \neg A \wedge \neg B, 
+        \neg A \wedge \neg B \Rightarrow C  \}\]
+
+<ol start="2">
+  <li><strong>Eliminate $\Rightarrow$.</strong> Replace each occurrence of $S_1 \Rightarrow S_2$ with the equivalent $\neg S_1 \vee S_2$.  With such replacements, our knowledge base becomes:</li>
+</ol>
+
+\[\{ \neg A \vee \neg B, \neg \neg B \vee A, \neg B \vee \neg C, 
+        \neg \neg C \vee B, \neg C \vee \neg A \wedge \neg B, 
+        \neg (\neg A \wedge \neg B) \vee C \}\]
+
+<ol start="3">
+  <li><strong>Move $\neg$ inward.</strong> In CNF, negation ($\neg$) only occurs in literals before atomic sentence symbols. All occurrences of $\neg$ can either be negated or “moved” inward towards the atomic sentences using three equivalences:</li>
+</ol>
+
+\[\begin{aligned}
+        \neg(S_1 \wedge S_2) \equiv \neg S_1 \vee \neg S_2  &amp; \;\;\text{ de Morgan's law} \\
+        \neg(S_1 \vee S_2)  \equiv \neg S_1 \wedge \neg S_2 &amp; \\
+        \neg \neg s \equiv s \hspace{0.55in} &amp; \;\;\text{ double elimination} 
+    \end{aligned}\]
+
+<p>Using these equivalences, our knowledge base is rewritten:</p>
+
+\[\{ \neg A \vee \neg B, B \vee A, \neg B \vee \neg C, 
+        C \vee B, \neg C \vee \neg A \wedge \neg B, 
+        A \vee  B \vee C \}\]
+
+<ol start="4">
+  <li><strong>Distribute $\vee$ over $\wedge$.</strong>  That is move disjunction ($\vee$) inward while moving conjunction ($\wedge$) outward to form a conjunction of disjunctions.  This is accomplished through distributivity of $\vee$:</li>
+</ol>
+
+\[\begin{aligned}
+        S_1 \vee (S_2 \wedge s_3) \equiv (S_1 \vee S_2) \wedge (S_1 \vee s_3) \\
+        (S_1 \wedge S_2) \vee s_3 \equiv (S_1 \vee s_3) \wedge (S_2 \vee s_3)
+    \end{aligned}\]
+
+<p>Thus, we can rewrite our knowledge base:</p>
+
+\[\{ \neg A \vee \neg B, B \vee A, \neg B \vee \neg C, 
+        C \vee B, 
+        (\neg C \vee \neg A) \wedge (\neg C \vee \neg B), 
+        A \vee  B \vee C \}\]
+
+<p>or</p>
+
+\[\{ \neg A \vee \neg B, B \vee A, \neg B \vee \neg C, 
+        C \vee B, 
+        \neg C \vee \neg A, \neg C \vee \neg B, 
+        A \vee  B \vee C \}\]
+
+<p>This is sometimes more compactly expressed as a set of a set of literals, where the sets of literals are implicitly understood as clauses (disjunctions) and the set of these is implicitly understood as the knowledge base, a conjunction of known sentences:</p>
+
+\[\{ \{\neg A, \neg B \},
+        \{ B, A\}, 
+        \{ \neg B, \neg C\}, 
+        \{ C, B \}, 
+        \{ \neg C, \neg A \}, 
+        \{ \neg C, \neg B \},
+        \{ A, B, C \} \}\]
+
+<p>It is important to note that a model in CNF is a truth assignment that makes <em>at least one literal in each clause true</em>.</p>
+
+<h3 id="resolution-theorem-proving">Resolution Theorem Proving</h3>
+
+<p>Consider the two clauses, $B \vee A$ or  ${B,A}$ and $\neg B \vee \neg C$ or ${\neg B,\neg C}$ of our example CNF knowledge base. The first reads, “Bob is a truth-teller or Amy is a truth-teller.” The second reads, “Bob is not a truth-teller or Cal is not a truth-teller.” Consider what happens according to Bob’s truthfulness:</p>
+
+<ul>
+  <li><strong>Bob is not a truth-teller.</strong> The second clause is satisfied. The first clause is satisfied if and only if Amy is a truth-teller.</li>
+  <li><strong>Bob is a truth-teller.</strong> The first clause is satisfied. The second clause is satisfied if and only if Cal is not a truth-teller.</li>
+</ul>
+
+<p>Since one case or the other holds, we know in any model of <em>both</em> clauses that Amy is a truth-teller or Cal is not a truth-teller. In other words, from clauses $B \vee A$ and $\neg B \vee \neg C$, we can derive the clause $A \vee \neg C$ and add it to our knowledge base. This is a specific application of the <strong>resolution rule</strong>.</p>
+
+<p>In general, we can express the resolution rule as follows: Given a clause $l_1 \vee l_2 \vee \ldots \vee l_n \vee A$ and $l_1 \vee l_2 \vee \ldots \vee l_n \vee \neg A$, we can derive the clause $l_1 \vee l_2 \vee \ldots \vee l_n$. If $A$ is false, one of the other first clause literals must be true. If $A$ is true, one of the other second clause literals must be true. Since $A$ must be either true or false, then at least one of all the other $n$ literals must be true.</p>
+
+<p>Not all possible resolution rule derivations are useful. Consider what happens when we apply the resolution rule to the first two clauses of our example knowledge base. From $\neg A \vee \neg B$ and $B \vee A$, we can derive either $\neg A \vee A$ or $\neg B \vee B$ depending on which atomic sentence we use for the resolution. In either case, we derive a tautology. The clause $\neg A \vee A$ is always true. It reads “Amy is not a truth-teller or Amy is a truth-teller.”</p>
+
+<p>In order to direct our derivations towards a simple goal, we will perform <strong>proof by contradiction</strong>. The basis of this style of proof is the fact that $S_1 \models S_2$ if and only if $(S_1 \wedge \neg S_2)$ is <em>unsatisfiable</em>. Put another way, every truth assignment that makes $S_1$ true also makes $S_2$ true if and only if there exists no truth assignment where $S_1$ is true and $S_2$ is false.</p>
+
+<p>The application of this principle is simple. Suppose that sentence $S_1$ represents our knowledge base, and that we wish to wish to prove that sentence $S_2$ follows from $S_1$. We simply add $\neg S_2$ to our knowledge base and seek to derive a contradiction. We take what we believe must follow, and prove it by showing that the opposite causes a contradiction. This approach is not only effective in human argument, but is important for automated theorem proving as well.</p>
+
+<p>Let us use this approach to prove that Cal is a liar ($\neg C$). In addition to the knowledge base, we assume the negation of what we wish to prove ($\neg \neg C$, that is $C$). We will number our clauses to the left. To the right, we will list the clause numbers used to derive the clause by resolution.</p>
+
+<center>
+<img src="assets/images/truth-tellers-proof.png" class="center" />
+</center>
+
+<p><br />
+Recall that at least one literal of each clause must be true for a truth assignment to be a model. This last <strong>empty clause</strong> has no literals at all and represents a clear contradiction. To see why, consider the resolution that led to it. In (10) and (11) we declare a fact and its negation to be true. The resolution rule leaves us no literals to be made true to satisfy these clauses. A clause with no literals is thus logically equivalent to <em>false</em>. Since we hold each clause to be true, we have in effect shown that false is true. This is a contradiction. Thus it cannot be the case that ${C}$ is true as we had assumed. Thus ${\neg C}$ logically follows from our knowledge base.</p>
+
+<p>It should be noted that an unsatisfiable knowledge base will derive an empty clause without any need of assumption. One can thus prove any sentence using proof by contradiction and starting with a contradictory knowledge base.</p>
+
+<p>If one cannot derive a contradiction in this manner, then there is a satisfying truth assignment for the knowledge base and the assumed negation of the hypothesis one sought to prove.</p>
+
+<p>For practice, the reader should perform two resolution proofs by contradiction that</p>
+
+<ul>
+  <li>Amy is a liar, and</li>
+  <li>Bob is a truth-teller.</li>
+</ul>
+
+<p>When we derive a sentence $S_2$ from sentence $S_1$, we denote it $S_1 \models S_2$. A proof procedure that derives only what is entailed is called <strong>sound</strong>. A proof procedure that can derive anything that is entailed is called <strong>complete</strong>. Resolution theorem proving is both sound and complete.</p>
+
+<h1 id="part-1-pacman">Part 1: Pacman</h1>
+
+<h2 id="the-expr-class">The Expr Class</h2>
+
+<p>In the first part of this project, you will be working with the <code class="rh">Expr</code> class defined in <code class="bh">logic.py</code> to build propositional logic sentences. An <code class="rh">Expr</code>object is implemented as a tree with logical operators ($\wedge$, $\vee$, $\neg$, $\rightarrow$, $\leftrightarrow$) at each node and with literals (A, B, C) at the leaves. The sentence</p>
+
+\[(A \wedge B) \leftrightarrow (\neg C \vee D)\]
+
+<p>would be represented as the tree.</p>
+
+<center><img src="assets/images/logic_tree.png" width="400px" /></center>
+
+<p>To instantiate a symbol named ‘A’, call the constructor like this:</p>
+
+<p><code class="rh">A = Expr('A')</code></p>
+
+<p>The <code class="rh">Expr</code>  class allows you to use Python operators to build up these expressions.  The following are the available Python operators and their meanings:</p>
+
+<ul>
+  <li><code class="rh">~A</code>: $\neg A$</li>
+  <li><code class="rh">A &amp; B</code>: $A \wedge B$</li>
+  <li><code class="rh">A | B</code>: $A \vee B$</li>
+  <li><code class="rh">A &gt;&gt; B</code>: $A \rightarrow B$</li>
+  <li><code class="rh">A % B</code>: $A \leftrightarrow B$</li>
+</ul>
+
+<p>So to build the expression $A \wedge B$, you would type this:</p>
+
+<p><code class="rh">A = Expr('A')</code></p>
+
+<p><code class="rh">B = Expr('B')</code></p>
+
+<p><code class="rh">a_and_b = A &amp; B</code></p>
+
+<p>(Note that <code class="rh">A</code> to the left of the assignment operator in that example is just a Python variable name, i.e. <code class="rh">symbol1 = Expr('A')</code> would have worked just as well.)</p>
+
+<p>One last important thing to note is that typing in <code class="rh">A &amp; B &amp; C</code> will give the expression <code class="rh">((A &amp; B) &amp; C)</code>. If instead you want <code class="rh">(A &amp; B &amp; C)</code>, as you will for these problems, use <code class="rh">conjoin</code>, which takes a list of expressions as input and returns one expression that is the conjunction of all the inputs. Even though both expressions are logically equivalent, it is generally neater to use <code class="rh">conjoin</code> everywhere you can, because it is easier to read your knowledge base for debugging when your expression tree is more flat and does not have many layers of nested parentheses. The <code class="rh">&amp;</code> operator in Python is a binary operator and builds an unbalanced binary tree if you chain it several times, whereas <code class="rh">conjoin</code> builds a tree that is one level deep with all the inputs extending directly from the <code class="rh">&amp;</code> operator at the root. <code class="rh">disjoin</code> is similarly defined for <code class="rh">|</code>. The autograder for Question 1 will require that you use <code class="rh">conjoin</code> and <code class="rh">disjoin</code> wherever possible, instead of chaining several <code class="rh">&amp;</code> operators or several <code class="rh">|</code> operators. If you keep with this convention for later problems, it will help with debugging because you will get more readable expressions.</p>
+
+<p>There is additional, more detailed documentation for the <code class="rh">Expr</code> class in <code class="bh">logic.py</code>.</p>
+
+<h3 id="tips">Tips</h3>
+
+<ul>
+  <li>When creating a symbol with <code class="rh">Expr</code>, it must start with an upper case character. You will get non-obvious errors later if you don’t follow this convention.</li>
+  <li>Be careful about combining <code class="rh">Expr</code> instances. For example, if you intend to create the expression <code class="rh">x = Expr('A') &amp; Expr('B')</code>, you don’t want to accidentally type <code class="rh">x = Expr('A &amp; B')</code>. The former will be a logical expression of the symbol ‘A’ and the symbol ‘B’, while the latter will be a single symbol (<code class="rh">Expr</code>) named ‘A &amp; B’.</li>
+</ul>
+
+<h3 id="sat-solver-setup">SAT Solver Setup</h3>
+
+<p>A SAT (satisfiability) solver takes a logic expression which encodes the rules of the world and returns a model (true and false assignments to logic symbols) that satisfies that expression if such a model exists. To efficiently find a possible model from an expression, we take advantage of the <a href="https://pypi.python.org/pypi/pycosat">pycosat</a> module, which is a Python wrapper around the <a href="http://fmv.jku.at/picosat/">picoSAT library</a>.</p>
+
+<p>Unfortunately, this requires installing this module/library on each machine.</p>
+
+<p>To install this software on your conda env, please follow these steps:</p>
+
+<ol>
+  <li>Activate your conda env (if your env is called <code class="rh">(cs4811)</code>):</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">(</span>base<span class="o">)</span> <span class="o">[</span>lebrown@c28-112a-01 logic]<span class="nv">$ </span>conda activate cs4811</code></pre></figure>
+
+<ol start="2">
+  <li>Install pycosat: On command line run:</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">(</span>cs4811<span class="o">)</span> <span class="o">[</span>lebrown@c28-112a-01 logic]<span class="nv">$ </span>conda <span class="nb">install </span>pycosat</code></pre></figure>
+
+<p>Testing pycosat installation:</p>
+
+<p>After unzipping the project code and changing to the project code directory, run:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">(</span>cs4811<span class="o">)</span> <span class="o">[</span>lebrown@c28-112a-01 logic]<span class="nv">$ </span>python pycosat_test.py</code></pre></figure>
+
+<p>This should output:</p>
+
+<p>[1, -2, -3, -4, 5].</p>
+
+<p>Please let us know if you have issues with this setup. This is critical to completing the project, and we don’t want you to spend your time fighting with this installation process.</p>
+
+<h2 id="q1-2-pts-logic-warm-up">Q1 (2 pts): Logic Warm-up</h2>
+
+<p>This question will give you practice working with the <code class="rh">Expr</code> data type used in the project to represent propositional logic sentences. You will implement the following functions in <code class="rh">logicPlan.py</code>:</p>
+
+<ul>
+  <li><code class="rh">sentence1()</code>: Create one <code class="rh">Expr</code> instance that represents that the following three sentences are true. Do not do any logical simplification, just put them in a list in this order, and return the list conjoined. Each element of your list should correspond to each of the three sentences.</li>
+</ul>
+
+\[\begin{aligned}
+		A \vee B \\
+			\\
+		\neg A \leftrightarrow (\neg B \vee C) \\
+			\\
+		\neg A \vee \neg B \vee C \\
+	\end{aligned}\]
+
+<ul>
+  <li><code class="rh">sentence2()</code>: Create one <code class="rh">Expr</code> instance that represents that the following four sentences are true. Again, do not do any logical simplification, just put them in a list in this order, and return the list conjoined.</li>
+</ul>
+
+\[\begin{aligned}
+		C \leftrightarrow (B \vee D) \\
+			\\
+		A \rightarrow (\neg B \wedge \neg D) \\
+			\\
+		\neg (B \wedge \neg C) \rightarrow A \\
+			\\
+		\neg D \rightarrow C \\
+	\end{aligned}\]
+
+<ul>
+  <li><code class="rh">sentence3()</code>: Using the <code class="rh">PropSymbolExpr</code> constructor, create symbols <code class="rh">PacmanAlive[0]</code>, <code class="rh">PacmanAlive[1]</code>, <code class="rh">PacmanBorn[0]</code>, and <code class="rh">PacmanKilled[0]</code> (see below for an example <code class="rh">PropSymbolExpr</code> instantiation), and create one <code class="rh">Expr</code> instance which encodes the following three <em>English</em> sentences as propositional logic in this order without any simplification:
+    <ol>
+      <li>Pacman is alive at time 1 if and only if he was alive at time 0 and he was not killed at time 0 or he was not alive at time 0 and he was born at time 0.</li>
+      <li>At time 0, Pacman cannot both be alive and be born.</li>
+      <li>Pacman is born at time 0.</li>
+    </ol>
+  </li>
+  <li><code class="rh">findModel(sentence)</code>: Use <code class="rh">to_cnf</code> to convert the input sentence into Conjunctive Normal Form (the form required by the SAT solver). Then pass it to the SAT solver using <code class="rh">pycoSAT</code> to find a satisfying assignment to the symbols in <code class="rh">sentence</code>, i.e., a model. A model is a dictionary of the symbols in your expression and a corresponding assignment of True or False. You can test your code on <code class="rh">sentence1()</code>, <code class="rh">sentence2()</code>, and <code class="rh">sentence3()</code> by opening an interactive session in Python and running <code class="rh">findModel(sentence1())</code> and similar queries for the other two. Do they match what you thought?</li>
+</ul>
+
+<p>For the later problems in the project, we will have symbols with names like P[3, 4, 2], which represents Pacman being at position (3, 4) at time 2, and we will use them in logic expressions like the above in place of A, B, C, D. The <code class="rh">PropSymbolExpr</code> constructor is a useful tool for creating symbols like P[3, 4, 2] that have numerical information encoded in their name. For example, to obtain the symbol P[3,4,2], you would type <code class="rh">PropSymbolExpr('P', 3, 4, 2)</code>.</p>
+
+<p>Are <code class="rh">sentence1()</code>, <code class="rh">sentence2()</code>, and <code class="rh">sentence3()</code> satisfiable? If so, try to find a satisfying assignment. (This is not graded, but is a good self-check to make sure you understand what’s happening here.)</p>
+
+<p>Before you continue, try instantiating a small sentence, e.g. $A \wedge B \rightarrow C$, and call <code class="rh">to_cnf</code> on it. Inspect the output and make sure you understand it (refer to AIMA section 7.5.2 for details on the algorithm <code class="rh">to_cnf</code> implements).</p>
+
+<p>To test and debug your code run:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q1</code></pre></figure>
+
+<hr />
+
+<h2 id="q2-3-pts-logic-workout">Q2 (3 pts): Logic Workout</h2>
+
+<p>Implement the following three logic expressions in <code class="bh">logicPlan.py</code>:</p>
+
+<ul>
+  <li><code class="rh">atLeastOne(literals)</code>: Return a single expression (Expr) in CNF that is true only if at least one expression in the input list is true. Each input expression will be a literal.</li>
+  <li><code class="rh">atMostOne(literals)</code>: Return a single expression (Expr) in CNF that is true only if at most one expression in the input list is true. Each input expression will be a literal. HINT: Use <code class="rh">itertools.combinations</code>. If you have 
+n literals, and at most one is true, your resulting CNF expression should be a conjunction of $\binom{n}{2}$ clauses.</li>
+  <li><code class="rh">exactlyOne(literals)</code>: Return a single expression (Expr) in CNF that is true only if exactly one expression in the input list is true. Each input expression will be a literal. If you decide to call your previously implemented <code class="rh">atLeastOne</code> and <code class="rh">atMostOne</code>, call <code class="rh">atLeastOne</code> first to pass our autograder for q3.</li>
+</ul>
+
+<p>Each of these methods takes a list of <code class="rh">Expr</code> literals and returns a single <code class="rh">Expr</code> expression that represents the appropriate logical relationship between the expressions in the input list. An additional requirement is that the returned Expr must be in CNF (conjunctive normal form). You may NOT use the <code class="rh">to_cnf</code> function in your method implementations (or any of the helper functions <code class="rh">logic.eliminate_implications</code>, <code class="rh">logic.move_not_inwards</code>, and <code class="rh">logic.distribute_and_over_or</code>).</p>
+
+<p>When implementing your planning agents in the later questions, you will not have to worry about CNF until right before sending your expression to the SAT solver (at which point you can use <code class="rh">findModel</code> from question 1). <code class="rh">to_cnf</code> implements the algorithm from section 7.5.2 in AIMA. However, on certain worst-case inputs, the direct implementation of this algorithm can result in an exponentially sized sentences. In fact, a certain non-CNF implementation of <code class="rh">atMostOne</code> is one such worst case. So if you find yourself needing the functionality of <code class="rh">atLeastOne</code>, <code class="rh">atMostOne</code>, or <code class="rh">exactlyOne</code> for a later question, make sure to use the functions you’ve already implemented here to avoid accidentally coming up with that non-CNF alternative and passing it to <code class="rh">to_cnf</code>. If you do this, your code will be so slow that you can’t even solve a 3x3 maze with no walls.</p>
+
+<p>You may utilize the <code class="rh">logic.pl_true</code> function to test the output of your expressions. <code class="rh">pl_true</code> takes an expression and a model and returns True if and only if the expression is true given the model.</p>
+
+<p>To test and debug your code run:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q2</code></pre></figure>
+
+<hr />
+
+<h2 id="q3-3-pts-pacphysics-and-satisfiability">Q3 (3 pts): Pacphysics and Satisfiability</h2>
+
+<p>In this question, you will implement the basic pacphysics logical expressions, as well as learn how to prove where pacman is and isn’t by building an appropriate knowledge base (KB) of logical expressions.</p>
+
+<p>Implement the following functions in <code class="bh">logicPlan.py</code>:</p>
+
+<ul>
+  <li><code class="rh">pacphysics_axioms</code>: Here, you will add the following axioms to <code class="rh">pacphysics_sentences</code>. For a given timestep t:
+    <ul>
+      <li>For all (x, y) in <code class="rh">all_coords</code>, add the following implication (if-then form): if a wall is at (x, y), then Pacman is not at (x, y, t)</li>
+      <li>Pacman is at exactly one of the non_outer_wall_coords at timestep t.</li>
+      <li>Pacman takes exactly one of the four actions in DIRECTIONS at timestep t.</li>
+      <li>Add each of the sentences above to <code class="rh">pacphysics_sentences</code>.</li>
+    </ul>
+  </li>
+  <li><code class="rh">check_location_satisfiability</code>: Given a transition (<code class="rh">x0_y0, action0, x1_y1, action1</code>) and a <code class="rh">problem</code>, you will write a function that will return a tuple of two models <code class="rh">(model1, model2)</code>.
+    <ul>
+      <li><code class="rh">model1</code> will attempt to prove that given <code class="rh">x0_y0, action0, action1</code>, Pacman is at (x1, y1) at time t = 1.</li>
+      <li><code class="rh">model2</code> will attempt to prove that given <code class="rh">x0_y0, action0, action1</code>, Pacman is NOT at (x1, y1) at time t = 1.</li>
+      <li>To implement this problem, you will need to add the following expressions to your KB in order:
+        <ul>
+          <li>At t = 0:
+            <ul>
+              <li>Add to KB: Pacman’s current location (x0, y0)</li>
+              <li>Add to KB: <code class="rh">pacphysics_axioms(...)</code></li>
+              <li>Add to KB: Pacman takes <code class="rh">action0</code></li>
+              <li>Add to KB: <code class="rh">allLegalSuccessorAxioms(t+1, ...)</code></li>
+            </ul>
+          </li>
+          <li>At t = 1:
+            <ul>
+              <li>Add to KB: <code class="rh">pacphysics_axioms(...)</code></li>
+              <li>Add to KB: Pacman takes <code class="rh">action1</code></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>If you are stuck on <code class="rh">check_location_satisfiability</code>, think back on how to prove a knowledge base entails some query q: we prove that $KB \wedge \neg q$ is unsatisfiable. Likewise, to prove some query q is false given a knowledge base, we prove $KB \wedge q$ is unsatisfiable. Thus, your two models should both call <code class="rh">findModel</code>, but one on KB $\wedge$ (Pacman at (x1, y1)), and the other on KB $\wedge \neg$ (Pacman at (x1, y1)).</p>
+
+<p><strong>Prop Symbol Names (Important!)</strong>: For the rest of the project, please use the following variable naming conventions:</p>
+
+<ul>
+  <li><code class="rh">PropSymbolExpr(pacman_str, x, y, t)</code>: whether or not Pacman is at (x, y) at time t</li>
+  <li><code class="rh">PropSymbolExpr(wall_str, x, y)</code>: whether or not a wall is at (x, y)</li>
+  <li><code class="rh">PropSymbolExpr(action, t)</code>: whether or not pacman takes action <code class="rh">action</code> at time t, where <code class="rh">action</code> is an element of <code class="rh">DIRECTIONS</code></li>
+</ul>
+
+<p>For the variable that encodes whether or not Pacman is at (x, y) at time t, write the code <code class="rh">PropSymbolExpr(pacman_str, x, y, t)</code>. For the variable that encodes whether or not a wall is at (x, y), write the code <code class="rh">PropSymbolExpr(wall_str, x, y)</code>.</p>
+
+<p><strong>Transition Models</strong>: In this project, we will use a transition models:</p>
+
+<ul>
+  <li><code class="rh">allLegalSuccessorAxioms</code>: This transition model assumes that all actions taken are valid (no action brings pacman onto a square with walls). We will use this function to generate our successor axioms for most of the project, because it is lightweight and improves runtime.</li>
+</ul>
+
+<p>To test and debug your code run:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q3</code></pre></figure>
+
+<hr />
+
+<h2 id="q4-4-pts-path-planning-with-logic">Q4 (4 pts): Path Planning with Logic</h2>
+
+<p>Pacman is trying to find the end of the maze (the goal position). Implement the following method using propositional logic to plan Pacman’s sequence of actions leading him to the goal:</p>
+
+<ul>
+  <li><code class="rh">positionLogicPlan(problem)</code>: Given an instance of <code class="rh">logicPlan.PlanningProblem</code>, returns a sequence of action strings for the Pacman agent to execute.</li>
+</ul>
+
+<p>You will not be implementing a search algorithm, but creating expressions that represent pacphysics for all possible positions at each time step. This means that at each time step, you should be adding general rules for all possible locations on the grid, where the rules do not assume anything about Pacman’s current position.</p>
+
+<p>You will need to code up the following sentences for your knowledge base, in the following pseudocode form:</p>
+
+<ul>
+  <li>Add to KB: Initial knowledge: Pacman’s initial location at timestep 0</li>
+  <li>for t in range(50) [Autograder will not test on layouts requiring $\geq$ 50 timesteps]
+    <ul>
+      <li>Add to KB: Initial knowledge: Pacman can only be at <code class="rh">exactlyOne</code> of the locations in <code class="rh">non_wall_coords</code> at timestep t.</li>
+      <li>Is there a satisfying assignment for the variables given the knowledge base so far? <br />
+  Use <code class="rh">findModel</code> and pass in the Goal Assertion and <code class="rh">KB</code>.
+        <ul>
+          <li>If there is, return a sequence of actions from start to goal using <code class="rh">extractActionSequence</code>.</li>
+          <li>Here, Goal Assertion is the expression asserting that Pacman is at the goal at timestep t.</li>
+        </ul>
+      </li>
+      <li>Add to KB: Pacman takes exactly one action per timestep.</li>
+      <li>Add to KB: Transition Model sentences: call <code class="rh">pacmanSuccessorStateAxioms(...)</code> for all possible pacman positions in <code class="rh">non_wall_coords</code>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Test your code on smaller mazes using:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> maze2x2 <span class="nt">-p</span> LogicAgent <span class="nt">-a</span> <span class="nv">fn</span><span class="o">=</span>plp</code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python pacman.py <span class="nt">-l</span> tinyMaze <span class="nt">-p</span> LogicAgent <span class="nt">-a</span> <span class="nv">fn</span><span class="o">=</span>plp</code></pre></figure>
+
+<p>To test and debug your code run:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q4</code></pre></figure>
+
+<p>Note that with the way we have Pacman’s grid laid out, the leftmost, bottommost space occupi-able by Pacman (assuming there isn’t a wall there) is (1, 1), as shown below (not (0, 0)).</p>
+
+<center><img src="assets/images/grid.png" width="200px" /></center>
+
+<p>Hint: If you are stuck, try re-reading AIMA chapter 7.7, “Agents Based on Propositional Logic.”</p>
+
+<p>Debugging hints:</p>
+
+<ul>
+  <li>If you’re finding a length-0 or a length-1 solution: is it enough to simply have axioms for where Pacman is at a given time? What’s to prevent him from also being in other places?</li>
+  <li>Coming up with some of these plans can take a long time. It’s useful to have a print statement in your main loop so you can monitor your progress while it’s computing.</li>
+  <li>If your solution is taking more than a couple minutes to finish running, you may want to revisit implementation of <code class="rh">exactlyOne</code> and <code class="rh">atMostOne</code> (if you rely on those), and ensure that you’re using as few clauses as possible.</li>
+</ul>
+
+<hr />
+
+<h1 id="part-2-liars">Part 2: Liars</h1>
+
+<h2 id="q5-3-pts-liars-and-truth-tellers">Q5 (3 pts): Liars and Truth-Tellers</h2>
+
+<blockquote>
+  <p>This problem is from the Ontario Mathematical Gazette 22.1.1.  Consider and encode the following problem.</p>
+</blockquote>
+
+<blockquote>
+  <p>The salt has been stolen! Well, it was found that the culprit was either the Caterpillar, Bill the Lizard or the Cheshire Cat. The three were tried and made the following statements in court: CATERPILLAR: Bill the Lizard ate the salt. BILL THE LIZARD: That is true! CHESHIRE CAT: I never ate the salt.</p>
+</blockquote>
+
+<blockquote>
+  <p>As it happened, at least one of them lied and at least one told the truth. Who ate the salt?</p>
+</blockquote>
+
+<p>For Question 5, you will fill in five methods in <code class="bh">liars.py</code>.  Each method corresponds to one of the five axioms described by the problem:</p>
+
+<ol>
+  <li>CATERPILLAR statement</li>
+  <li>BILL THE LIZARD statement</li>
+  <li>CHESHIRE CAT statement</li>
+  <li>at least one of them lied and at least one of them told the truth</li>
+  <li>one of them ate the salt.</li>
+</ol>
+
+<p>Use the following encoding of the propositions:</p>
+
+<ol>
+  <li>Let <code class="wh">1</code> be CATERPILLAR tells the truth</li>
+  <li>Let <code class="wh">2</code> be BILL THE LIZARD tells the truth</li>
+  <li>Let <code class="wh">3</code> be CHESHIRE CAT tells the truth</li>
+  <li>Let <code class="wh">4</code> be CATERPILLAR ate the salt</li>
+  <li>Let <code class="wh">5</code> be BILL THE LIZARD ate the salt</li>
+  <li>Let <code class="wh">6</code> be CHESHIRE CAT ate the salt</li>
+</ol>
+
+<p>Your program is expected to return a nested list representing the CNF form of the statement.</p>
+
+<p>Clauses (disjunctions) are specified as a <strong>list of integer literals</strong>, each representing a propositional variable. If the integer is positive, we are referring to the literal directly. If the integer is negative, we treat it as the not of the literal. The clause ``The CATERPILLAR does not tell the truth or BILL THE LIZARD does not tell the truth’’ would be represented by the python list [-1, -2].</p>
+
+<p>Clauses are then combined together as a list. A knowledge base with the sentence above combined with another sentence, ‘‘CATERPILLAR ate the salt or CHESHIRE CAT did not eat the salt’’ would be:  [[-1, -2], [4, -6]]. The return value for a CNF statement will always be a nested list of depth two.</p>
+
+<p><em>Grading:</em> The autograder will test each axiom and will ensure that the axioms have a correct structure and use the correct atomic statements. Finally, the autograder will test the inference of the entailment statement (KB entails 1, KB entails -1, KB entails 2, etc.) to ensure that the axioms are correct.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q5</code></pre></figure>
+
+<hr />
+
+<h1 id="part-3-clue">Part 3: Clue</h1>
+
+<p>Clue (also known as Cluedo in some regions) is a mystery-themed game of deduction. The goal of the game is to be the first player to correctly name the contents of a case file: the murder suspect, the weapon used, and the room the murder took place in. There are 6 possible suspects, 6 possible weapons, and 9 possible rooms, each of which are pictured on a card. One card of each type is chosen randomly and placed in a “case file” envelope without being revealed to any player. All other cards are dealt out face-down to the players. Each player takes on the identity of one of the suspects.</p>
+
+<p>Each player thus begins with private knowledge: that their dealt cards are not in the case file. As the game proceeds, players suggest possible suspect, weapon, and room combinations, and other players refute these suggestions by privately revealing such cards to the suggester. This type of game is called a <strong>knowledge game</strong>, and the basic knowledge of the game may be expressed using <strong>propositional logic</strong>.</p>
+
+<h2 id="reasoning-about-clue">Reasoning about Clue</h2>
+
+<p>In this section, we describe the skeleton implementation of <code class="bh">cluedo.py</code> which maintains a knowledge base of Clue game information. Portions of the implementation which supply clauses to the autograder are deliberately left unimplemented as exercises for you.  When these portions are implemented, expert deductions can be made about the game.</p>
+
+<p>In <code class="bh">cluedo.py</code>, there is a class which encapsulates the card identifiers we will be used.  We also provide you with static methods which should be used to translate card identifiers to the corresponding integer identifiers:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre>  suspects = ["mu", "pl", "gr", "pe", "sc", "wh"]
+  weapons = ["kn", "ca", "re", "ro", "pi", "wr"]
+  rooms = ["ha", "lo", "di", "ki", "ba", "co", "bi", "li", "st"]
+  caseFile = "cf"
+  hands = suspects + [caseFile]  
+  cards = suspects + weapons + rooms
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li><em>suspects</em> a list of symbols representing the suspects</li>
+  <li><em>weapons</em> a list of symbols representing the weapons</li>
+  <li><em>rooms</em> a list of symbols representing the rooms</li>
+  <li><em>caseFile</em> the symbol representing the case file</li>
+  <li><em>hands</em> a list of all the hands (all the locations that a card can be)</li>
+  <li><em>cards</em> a list of all the cards</li>
+</ul>
+
+<p>For our purpose, we assume that all games of Clue have six players, and each player takes on the role of one of the suspects.  Also, <strong>the <em>suspects</em> list is given in turn order</strong>.</p>
+
+<p>The symbols used to represent cards and players are, for the most part, the first two letters of their names, as shown in the following table:</p>
+
+<table class="cluedo_table">
+<thead>
+  <tr>
+    <td>Players/Suspects</td>
+    <td>Weapons</td>
+    <td>Rooms</td>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Col. Mustard <code class="wh">mu</code></td> 
+    <td>Knife <code class="wh">kn</code></td> 
+    <td>Hall <code class="wh">ha</code></td>
+  </tr>
+  <tr>
+    <td>Prof. Plum <code class="wh">pl</code></td> 
+    <td>Candlestick <code class="wh">cs</code></td> 
+    <td>Lounge <code class="wh">lo</code></td>
+  </tr>
+  <tr>
+    <td>Mr. Green <code class="wh">gr</code></td> 
+    <td>Revolver <code class="wh">re</code></td> 
+    <td>Dining Room <code class="wh">di</code></td>
+  </tr>
+  <tr>
+    <td>Mrs. Peacock <code class="wh">pe</code></td> 
+    <td>Rope <code class="wh">ro</code></td> 
+    <td>Kitchen <code class="wh">ki</code></td>
+  </tr>
+  <tr>
+    <td>Miss Scarlett <code class="wh">sc</code></td> 
+    <td>Lead Pipe <code class="wh">pi</code></td> 
+    <td>Ballroom <code class="wh">ba</code></td>
+  </tr>
+  <tr>
+    <td>Mrs. White <code class="wh">wh</code></td> 
+    <td>Wrench <code class="wh">wr</code></td> 
+    <td>Conservatory <code class="wh">co</code></td>
+  </tr>
+  <tr>
+    <td></td> 
+    <td></td> 
+    <td>Billiard Room <code class="wh">bi</code></td>
+  </tr>
+  <tr>
+    <td>Case File <code class="wh">cf</code></td> 
+    <td></td> 
+    <td>Library <code class="wh">li</code></td>
+  </tr>
+  <tr>
+    <td></td> 
+    <td></td> 
+    <td>Study <code class="wh">st</code></td>
+  </tr>
+</tbody>
+</table>
+
+<p><br />
+The next functions use the indices (position numbers) of these symbols in their respective lists to compute unique literal integers for clauses.</p>
+
+<p>There is an atomic sentence for each place and card pair. Each Clue atomic sentence $c_p$ symbolizes the statement “The card $c$ is in place $p$.”.  We assign an integer to each sentence using the functions:</p>
+
+<p><code class="ph">def getIdentifierFromIndicies(hand,card)</code></p>
+
+<p><code class="ph"> def getIdentifierFromNames(hand,card) </code></p>
+
+<p>For example, consider the atomic sentence $pi_{wh}$. The player Mrs. White (“wh”) has index 2. The lead pipe card (“pi”) has index 10. There are 21 cards. Therefore, the integer corresponding to the atomic sentence $c_p$ is $2 \times 21 + 10 + 1 = 53$. Each atomic sentence has a unique number.</p>
+
+<h2 id="q6-1-pts-initial-hand">Q6 (1 pts): Initial Hand</h2>
+
+<p>At the beginning of the game, the player is dealt a hand (set) of cards. This is private information the player has about what is not in the case file. Before the beginning of the game, we use the hand function to note that <strong>the given cards are in the possession of that player</strong>.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">deal</span><span class="p">(</span><span class="n">player</span><span class="p">,</span><span class="n">cards</span><span class="p">):</span></code></pre></figure>
+
+<p><em>Grading:</em> The autograder will ensure that the dealt cards correspond to the correct facts in the knowledge base.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q6</code></pre></figure>
+
+<h2 id="q7-4-pts-game-axioms-in-kb">Q7 (4 pts) Game Axioms in KB</h2>
+
+<p>Now we come to the portions of the <code class="bh">cluedo.py</code> that are the core of the cludeo part of the project. Here you must consider the knowledge to be represented, and construct a list of suitable clauses for the SAT-solver.</p>
+
+<p>The knowledge you will encode falls into four categories:</p>
+
+<ol>
+  <li><strong>Each card is in at least one place.</strong> That is, each card is in a player’s hand or the case file.  We do not allow the possibility that a card was accidentally left in the box.<br />
+<code class="rh">axiom_card_exists()</code></li>
+  <li><strong>Each card is in at most one place, (if a card is one place, it cannot be  in another place)</strong> Since there is only one of each card, the fact that it is in one place means in cannot be in another place. For each pair of places, it cannot be in both.<br />
+<code class="rh">axiom_card_unique()</code></li>
+  <li><strong>At least one card of each category is in the case file.</strong> We choose one card at random from each category to be placed in the case file. For example, at least one of the weapon cards is in the case file.<br />
+<code class="rh">axiom_casefile_exists()</code></li>
+  <li><strong>At most one card of each category is in the case file (no two cards in each category are in the case file)</strong> Since only one card from each category is placed in the case file, we cannot, for example, have both the Pipe <code class="wh">pi</code> and Wrench <code class="wh">wr</code> in the case file. For each pair of cards within a category, at least one of the two must not be in the case file.<br />
+<code class="rh">axiom_casefile_unique()</code></li>
+</ol>
+
+<p>You should seek to represent some of these facts on paper in propositional logic and convert them to CNF in order to gain a good understanding of what clauses need to be constructed.</p>
+
+<p><em>HINT: Also think back to Question 2 and your responses there.</em></p>
+
+<p><em>Grading:</em> The autograder will test each axiom and will ensure that the axioms have a correct structure and use the correct atomic statements. This does not necessarily mean that the axioms are exactly correct (this will be verified later in Question 10).</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q7</code></pre></figure>
+
+<h2 id="q8-4-pts-game-play---suggest">Q8 (4 pts) Game Play - Suggest</h2>
+
+<p>Earlier, we noted that the turn order of the players list is important. The <code class="rh">suggest</code> function is where this information is used. In the game of Clue, a player may suggest a suspect, a weapon, and a room, upon entering that room on the board. Since the board movement is irrelevant to the deduction, we will not detail the circumstances of a suggestion here.</p>
+
+<p>When a suggestion of three cards is made, the player to the left of the suggester (clockwise) checks their private cards to see if any of the cards are part of the suggestion. If so, the player must <em>refute</em> the suggestion by privately showing one of these refuting cards to the suggester. If not, the player states that they cannot refute the suggestion, and attention then turns to the next player clockwise. The next player does the same, either refuting or not, and this continues clockwise until the first possible refutation, or until all other players have stated that they cannot refute the suggestion.</p>
+
+<p>Suppose all six players are playing with the following turn order: Scarlett, Mustard, White, Green, Peacock, Plum.  There are three cases which can occur which will affect the type of knowledge we can from the suggestion:</p>
+
+<ol>
+  <li>
+    <p>The meaning of the function call <code class="rh">suggest("sc", "wh", "pi", "ha", "pe", "ha")</code> is as follows: <code class="language-html highlighter-rouge">suggester</code> Miss Scarlett suggested that Mrs. White committed the murder with the lead pipe in the hall (parameters <code class="rh">card1</code>, <code class="rh">card2</code>, and <code class="rh">card3</code>). This was refuted by <code class="language-html highlighter-rouge">refuter</code> Mrs. Peacock, who showed Scarlett the hall card (<code class="rh">cardShown</code>). <br />
+Consider that we learn much more than the fact that Mrs. Peacock has the hall card. After Scarlett suggested {<code class="wh">wh</code>, <code class="wh">pi</code>, <code class="wh">ha</code>}, all players between Scarlett and the refuter Peacock must have been unable to refute the suggestion. Thus, we <em>also</em> learn that these players, Mustard, White, and Green, do not have any of these cards. The knowledge we gain from a suggestion is both negative, which players do not have the suggested cards, and positive, which card a player has.</p>
+  </li>
+  <li>
+    <p>In many cases, a player does not get to see the card that is shown to refute the suggestion. In this case, the <code class="rh">cardShown</code> parameter is given the value <code class="language-html highlighter-rouge">None</code>. Consider the function call <code class="rh">suggest("wh", "mu", "re", "ba", "pe", None)</code>. White suggests that Mustard committed the murder with the revolver in the ballroom. Peacock refutes the suggestion by showing a card privately to White, but the player (Scarlett) does not get to see this card. In this case, we learn that Green does not have these cards. We also learn that Peacock has <em>at least one of these cards</em>. The information gained is similar to the previous case. The difference is that at least one of the three suggested cards must be in the refuter’s hand.</p>
+  </li>
+  <li>
+    <p>In some cases, there may not be a refuter at all. This is indicated by having the <code class="rh">refuter</code> parameter with the value <code class="language-html highlighter-rouge">None</code>. (The <code class="rh">cardShown</code> parameter should then also be <code class="language-html highlighter-rouge">None</code>.) If no player can refute the suggestion, we simply gain information that all players except the suggester do not have the suggested cards. The suggester is never part of the refutation.</p>
+  </li>
+</ol>
+
+<p>Implementing suggest, you must bear all of these cases in mind. Detailed rules to Clue may be found at the <a href="http://www.hasbro.com/common/instruct/clue_(2002).pdf">Hasbro website</a> and at <a href="http://en.wikipedia.org/wiki/Cluedo">Wikipedia</a>.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">suggest</span><span class="p">(</span><span class="n">suggester</span><span class="p">,</span><span class="n">card1</span><span class="p">,</span><span class="n">card2</span><span class="p">,</span><span class="n">card3</span><span class="p">,</span><span class="n">refuter</span><span class="p">,</span><span class="n">cardShown</span><span class="p">):</span></code></pre></figure>
+
+<p><em>Grading:</em> The autograder will ensure that the uncovered facts and knowledge by the suggestion are added to the knowledge base</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q8</code></pre></figure>
+
+<h2 id="q9-2-pts-game-play---accuse">Q9 (2 pts) Game Play - Accuse</h2>
+
+<p>The winner of Clue is the first player to correctly make an <em>accusation</em> (not a suggestion) naming the three cards in the case file. Each player can make an accusation on any one turn, and checks the correctness of the declared accusation by privately looking in the case file. An accusation can only be made once, as the player either wins or loses depending on the correctness of the accusation. (If a player loses through incorrect accusation, the player continues to refute suggestions by other players, but may no longer take part in play otherwise.)</p>
+
+<p>Consider the example function call <code class="rh">accuse("sc, "pe", "pi", "bi", True)</code>.</p>
+
+<ol>
+  <li>
+    <p>This represents the fact that the <code class="language-html highlighter-rouge">accuser</code> Scarlett accused Mrs. Peacock of committing the murder with the pipe in the billiard room, and that this accusation is correct (parameter <code class="rh">isCorrect</code> is <code class="language-html highlighter-rouge">True</code>). From a correct accusation, we gain knowledge that these three cards (parameters <code class="rh">card1</code>, <code class="rh">card2</code>, and <code class="rh">card3</code>) are in the case file.</p>
+  </li>
+  <li>
+    <p>Now consider what happens when the accusation is not correct. Suppose we have the function call <code class="rh">accuse("sc", "pe", "pi", "li", False)</code>. Then we learn that at least one of the three cards of the accusation is <em>not</em> in the case file. In implementing accuse, the programmer must handle both of these cases.</p>
+  </li>
+</ol>
+
+<p>Note further that <strong>whether the accusation is correct or not, one can deduce that the accuser does not have in hand any of the cards involved in the accusation</strong>. A player might suggest cards that are in hand in order to throw others off the trail, but a false <code class="language-html highlighter-rouge">accuse</code> results in losing the game.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">accuse</span><span class="p">(</span><span class="n">accuser</span><span class="p">,</span><span class="n">card1</span><span class="p">,</span><span class="n">card2</span><span class="p">,</span><span class="n">card3</span><span class="p">,</span><span class="n">isCorrect</span><span class="p">):</span></code></pre></figure>
+
+<p><em>Grading:</em> The autograder will ensure that the uncovered facts and knowledge by the suggestion are added to the knowledge base.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q9</code></pre></figure>
+
+<h2 id="q10-4-pts-game-play---full-game">Q10 (4 pts) Game Play - Full Game</h2>
+
+<p>Finally, a full game of Clue is played out accordingly using the specification in <code class="bh">cluedo_game.py</code>. This simulates a full game, with the agent taking the role of Ms. Scarlett. This will combine the implementations from the past four questions in order to test if correct deductions can be made on the whole.</p>
+
+<p><em>Grading:</em> The auto-grader simulates the game is described in the <code class="rh">play_cluedo</code> function and checks if the final casefile deduction is correct.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python autograder.py <span class="nt">-q</span> q10</code></pre></figure>
+
+<p>The game can also be run directly, with debugging output:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">python cluedo_game.py</code></pre></figure>
+
+<p>You are free to modify this code as you wish for your debugging purposes. The <code class="rh">printNotebook</code> method might be helpful for debugging the deductions made throughout the game. However, the autograder is configured to use <code class="bh">cluedo_game.py</code> directly, so any changes will be reflected in the autograder output. Instead, I recommend that you copy <code class="bh">cluedo_game.py</code> and make modifications in the copy.</p>
+
+<h1 id="submission">Submission</h1>
+
+<p>You’re not done yet!</p>
+
+<p>Create a <strong>single zip-file</strong>: <code class="bh">project3.zip</code>, that contains the three code files: <code class="bh">logicPlan.py</code>, <code class="bh">liars.py</code>, and <code class="bh">cluedo.py</code> as well as your group information file: <code class="bh">group.txt</code>.  <strong> Submit this zip-file on Canvas </strong>.</p>
+
+<p>The file <code class="bh">group.txt</code> should be structured as follows:</p>
+<ul>
+<li>a group of size 1<br />
+  <pre>Jane Doe, jdoe1</pre></li>
+<li>a group of size 2<br />
+  <pre>Sherlock Holmes, sholmes
+John Watson, jwatson</pre></li>
+<li>a group of size 3<br />
+  <pre>Hermione Granger, hgranger
+Harry Potter, hpotter
+Ronald Weasley, rweasley</pre></li>
+</ul>
+
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

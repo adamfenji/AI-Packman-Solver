@@ -1,0 +1,6 @@
+class: "CNFTest"
+
+description: "Testing that the CHESHIRE CAT tells the truth"
+test: "liars.rule_caterpillar() + liars.rule_bill() + liars.rule_cheshire() + liars.rule_truth() + liars.rule_salt()"
+entailment: "3"
+entails: "True"

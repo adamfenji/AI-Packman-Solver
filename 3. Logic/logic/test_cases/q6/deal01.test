@@ -1,0 +1,7 @@
+class: "CNFTest"
+
+description: "Dealing Ms. Scarlet three cards: Mrs. White, Lead Pipe, and Study"
+test: "cluedo.deal('sc', ['wh', 'li', 'st'])"
+literals: "[3, 20, 21]"
+maxsize: "1"
+maxsize_msg: "Ms. Scarlet's hand should consist of three facts, scwh (3), scli (20), and scst (21)"

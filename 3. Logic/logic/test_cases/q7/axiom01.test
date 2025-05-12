@@ -1,0 +1,8 @@
+class: "CNFTest"
+
+description: "Each card is in at least one place"
+test: "cluedo.axiom_card_exists()"
+minsize: "7"
+minsize_msg: "Each card must be related to each of the seven hands (players or case file)"
+maxsize: "7"
+maxsize_msg: "Each card must be related to each of the seven hands (players or case file)"

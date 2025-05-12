@@ -1,0 +1,7 @@
+class: "CNFTest"
+
+description: "Dealing Prof. Plum three cards: Col. Mustard, Candlestick, and Prof. Plum"
+test: "cluedo.deal('pl', ['co', 'cs', 'pl'])"
+literals: "[111, 113, 123]"
+maxsize: "1"
+maxsize_msg: "Prof. Plum's hand should consist of three facts, slco (111), plcs (113), and plpl (123)"

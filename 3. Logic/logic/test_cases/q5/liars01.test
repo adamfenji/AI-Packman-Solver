@@ -1,0 +1,7 @@
+class: "CNFTest"
+
+description: "CATERPILLAR's statement"
+test: "liars.rule_caterpillar()"
+literals: "[1, 5]"
+minsize: "2"
+minsize_msg: "no clauses should state facts, i.e., all clauses should have at least two statements"
